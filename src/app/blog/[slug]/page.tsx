@@ -25,26 +25,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <article>
-      {/* 3D scene header */}
-      <div style={{ position: 'relative', height: '260px', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
-        <ArticleSceneWrapper slug={slug} />
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 2,
-          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-          padding: '1.5rem 2rem',
-          background: 'linear-gradient(to top, rgba(8,8,8,0.85) 0%, transparent 60%)',
-          pointerEvents: 'none',
-        }}>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: 'var(--accent)', letterSpacing: '0.12em', marginBottom: '0.4rem' }}>
-            &gt; writing / {slug}
-          </div>
-        </div>
-      </div>
-
-      {/* ASCII illustration */}
-      <AsciiIllustration slug={slug} />
-
-      {/* Article body */}
       <div className="article-page">
         <Link href="/blog" className="back-link">← writing</Link>
 
@@ -55,9 +35,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
         <h1 className="article-title">{post.title}</h1>
 
+        {/* 3D scene directly below title */}
+        <div style={{ position: 'relative', height: '340px', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: '2rem', overflow: 'hidden' }}>
+          <ArticleSceneWrapper slug={slug} />
+          <div style={{
+            position: 'absolute', bottom: '1rem', right: '1.5rem', zIndex: 2,
+            fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'var(--dim)', letterSpacing: '0.12em',
+          }}>
+            &gt; {slug}.3d
+          </div>
+        </div>
+
         <div className="article-tags">
           {post.tags.map(t => <span key={t} className="tag">{t}</span>)}
         </div>
+
+        <AsciiIllustration slug={slug} />
 
         <div className="article-content" dangerouslySetInnerHTML={{ __html: html }} />
       </div>

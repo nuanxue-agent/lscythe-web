@@ -14,6 +14,11 @@ type SceneType =
   | 'pyramid'
   | 'wormhole'
   | 'particles'
+  | 'prism'
+  | 'pulsing-sphere'
+  | 'drift-particles'
+  | 'watch-eye'
+  | 'mono-grid'
 
 interface Props {
   scene?: SceneType
@@ -30,20 +35,20 @@ function pickScene(slug: string): SceneType {
     'compose':         'sphere-cloud',
     'build':           'grid-wave',
     'gradle':          'circuit',
-    'room':            'pyramid',
+    'room':            'cube-matrix',
     'feature-flag':    'wormhole',
     'process':         'torus-knot',
     'navigation':      'particles',
     'spektr':          'sphere-cloud',
     'vektor':          'dna-helix',
     'nocturnd':        'grid-wave',
-    'sentinel':        'circuit',
+    'sentinel':        'watch-eye',
     'krate':           'cube-matrix',
-    'prism':           'rings',
-    'threadwatch':     'torus-knot',
-    'pulsar':          'wormhole',
-    'driftlog':        'particles',
-    'monobase':        'pyramid',
+    'prism':           'prism',
+    'threadwatch':     'watch-eye',
+    'pulsar':          'pulsing-sphere',
+    'driftlog':        'drift-particles',
+    'monobase':        'mono-grid',
   }
   for (const [key, val] of Object.entries(map)) {
     if (slug.includes(key)) return val
@@ -270,6 +275,117 @@ export default function ArticleScene({ scene, accent = '#00ff88', height = 280 }
       const pts = new THREE.Points(geo, mat)
       sceneTHR.add(pts)
       objects.push(pts)
+    } else if (scene === 'prism') {
+      // Triangular prism (actual prism geometry)
+      const shape = new THREE.Shape()
+      shape.moveTo(0, 1.2)
+      shape.lineTo(-1.2, -0.6)
+      shape.lineTo(1.2, -0.6)
+      shape.lineTo(0, 1.2)
+      const extrudeSettings = { depth: 2, bevelEnabled: false }
+      const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings)
+      const mat = new THREE.MeshBasicMaterial({ color: accentColor, wireframe: true, transparent: true, opacity: 0.4 })
+      const prism = new THREE.Mesh(geo, mat)
+      prism.position.z = -1
+      prism.rotation.y = Math.PI / 6
+      sceneTHR.add(prism)
+      objects.push(prism)
+      // inner prism
+      const shape2 = new THREE.Shape()
+      shape2.moveTo(0, 0.7)
+      shape2.lineTo(-0.7, -0.35)
+      shape2.lineTo(0.7, -0.35)
+      shape2.lineTo(0, 0.7)
+      const geo2 = new THREE.ExtrudeGeometry(shape2, { depth: 1.2, bevelEnabled: false })
+      const mat2 = new THREE.MeshBasicMaterial({ color: accent3Color, wireframe: true, transparent: true, opacity: 0.25 })
+      const prism2 = new THREE.Mesh(geo2, mat2)
+      prism2.position.z = -0.6
+      prism2.rotation.y = Math.PI / 6
+      sceneTHR.add(prism2)
+      objects.push(prism2)
+    } else if (scene === 'pulsing-sphere') {
+      // Pulsar = pulsing sphere with energy rings
+      const geo = new THREE.SphereGeometry(1, 32, 32)
+      const mat = new THREE.MeshBasicMaterial({ color: accentColor, wireframe: true, transparent: true, opacity: 0.3 })
+      const sphere = new THREE.Mesh(geo, mat)
+      sceneTHR.add(sphere)
+      objects.push(sphere)
+      // energy rings expanding
+      for (let i = 0; i < 3; i++) {
+        const ringGeo = new THREE.TorusGeometry(1.2 + i * 0.4, 0.015, 4, 40)
+        const ringMat = new THREE.MeshBasicMaterial({ color: accent2Color, transparent: true, opacity: 0.5 - i * 0.12 })
+        const ring = new THREE.Mesh(ringGeo, ringMat)
+        ring.rotation.x = Math.PI / 2
+        sceneTHR.add(ring)
+        objects.push(ring)
+      }
+      ;(sphere as any)._pulse = true
+    } else if (scene === 'drift-particles') {
+      // Driftlog = flowing particle stream
+      const count = 400
+      const positions = new Float32Array(count * 3)
+      const velocities = new Float32Array(count * 3)
+      const colors = new Float32Array(count * 3)
+      for (let i = 0; i < count; i++) {
+        positions[i*3]   = (Math.random()-0.5) * 8
+        positions[i*3+1] = (Math.random()-0.5) * 6
+        positions[i*3+2] = (Math.random()-0.5) * 6
+        velocities[i*3]   = (Math.random()-0.5) * 0.02
+        velocities[i*3+1] = (Math.random()-0.5) * 0.02
+        velocities[i*3+2] = (Math.random()-0.5) * 0.02
+        const c = accentColor
+        colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b
+      }
+      const geo = new THREE.BufferGeometry()
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+      const mat = new THREE.PointsMaterial({ size: 0.035, vertexColors: true, transparent: true, opacity: 0.7 })
+      const pts = new THREE.Points(geo, mat)
+      sceneTHR.add(pts)
+      objects.push(pts)
+      ;(pts as any)._velocities = velocities
+    } else if (scene === 'watch-eye') {
+      // Eye watching (for threadwatch/sentinel)
+      const eyeGeo = new THREE.SphereGeometry(1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2)
+      const eyeMat = new THREE.MeshBasicMaterial({ color: 0x1e1e1e, wireframe: true, transparent: true, opacity: 0.3 })
+      const eye = new THREE.Mesh(eyeGeo, eyeMat)
+      eye.rotation.x = -Math.PI / 2
+      sceneTHR.add(eye)
+      objects.push(eye)
+      // iris
+      const irisGeo = new THREE.CircleGeometry(0.4, 32)
+      const irisMat = new THREE.MeshBasicMaterial({ color: accentColor, transparent: true, opacity: 0.7 })
+      const iris = new THREE.Mesh(irisGeo, irisMat)
+      iris.position.y = 0.01
+      iris.rotation.x = -Math.PI / 2
+      sceneTHR.add(iris)
+      objects.push(iris)
+      // pupil
+      const pupilGeo = new THREE.CircleGeometry(0.15, 32)
+      const pupilMat = new THREE.MeshBasicMaterial({ color: accent2Color })
+      const pupil = new THREE.Mesh(pupilGeo, pupilMat)
+      pupil.position.y = 0.02
+      pupil.rotation.x = -Math.PI / 2
+      sceneTHR.add(pupil)
+      objects.push(pupil)
+    } else if (scene === 'mono-grid') {
+      // Monobase = organized grid structure
+      const boxSize = 0.35
+      const spacing = 0.5
+      for (let x = -2; x <= 2; x++) {
+        for (let y = -2; y <= 2; y++) {
+          for (let z = -1; z <= 1; z++) {
+            const geo = new THREE.BoxGeometry(boxSize, boxSize, boxSize)
+            const dist = Math.sqrt(x*x + y*y + z*z)
+            const col = dist < 1.5 ? accentColor : dist < 2.5 ? accent3Color : accent2Color
+            const mat = new THREE.MeshBasicMaterial({ color: col, wireframe: true, transparent: true, opacity: 0.3 - dist * 0.03 })
+            const cube = new THREE.Mesh(geo, mat)
+            cube.position.set(x * spacing, y * spacing, z * spacing)
+            sceneTHR.add(cube)
+            objects.push(cube)
+          }
+        }
+      }
     } else {
       // default: torus knot
       const geo = new THREE.TorusKnotGeometry(1.2, 0.35, 120, 16)
@@ -334,6 +450,58 @@ export default function ArticleScene({ scene, accent = '#00ff88', height = 280 }
       } else if (scene === 'particles') {
         objects[0].rotation.y = frame * 0.06
         objects[0].rotation.x = frame * 0.03
+      } else if (scene === 'prism') {
+        objects.forEach((o, i) => {
+          o.rotation.y = frame * 0.4 + i * 0.3
+          o.rotation.x = Math.sin(frame * 0.3) * 0.2
+        })
+      } else if (scene === 'pulsing-sphere') {
+        // sphere pulses scale
+        const pulse = 1 + Math.sin(frame * 3) * 0.08
+        objects[0].scale.setScalar(pulse)
+        // rings expand and fade
+        objects.forEach((o, i) => {
+          if (i === 0) return
+          const scale = 1 + Math.sin(frame * 2 + i * 1.2) * 0.15
+          o.scale.setScalar(scale)
+          const mat = (o as THREE.Mesh).material as THREE.MeshBasicMaterial
+          mat.opacity = (0.5 - (i - 1) * 0.12) * (0.5 + Math.sin(frame * 2 + i) * 0.5)
+        })
+        sceneTHR.rotation.y = frame * 0.1
+      } else if (scene === 'drift-particles') {
+        const pts = objects[0] as any
+        if (pts?._velocities) {
+          const pos = (pts.geometry as THREE.BufferGeometry).attributes.position as THREE.BufferAttribute
+          const vel = pts._velocities as Float32Array
+          for (let i = 0; i < pos.count; i++) {
+            let x = pos.getX(i) + vel[i*3]
+            let y = pos.getY(i) + vel[i*3+1]
+            let z = pos.getZ(i) + vel[i*3+2]
+            // wrap around bounds
+            if (x > 4) x = -4; if (x < -4) x = 4
+            if (y > 3) y = -3; if (y < -3) y = 3
+            if (z > 3) z = -3; if (z < -3) z = 3
+            pos.setXYZ(i, x, y, z)
+          }
+          pos.needsUpdate = true
+        }
+      } else if (scene === 'watch-eye') {
+        // iris tracks mouse slowly
+        const iris = objects[1]
+        const pupil = objects[2]
+        if (iris && pupil) {
+          iris.position.x += (mouse.x * 0.3 - iris.position.x) * 0.08
+          iris.position.z += (-mouse.y * 0.3 - iris.position.z) * 0.08
+          pupil.position.x = iris.position.x * 1.1
+          pupil.position.z = iris.position.z * 1.1
+        }
+        objects[0].rotation.z = Math.sin(frame * 0.5) * 0.05
+      } else if (scene === 'mono-grid') {
+        objects.forEach((o, i) => {
+          o.rotation.x = frame * 0.15 + i * 0.02
+          o.rotation.y = frame * 0.2 + i * 0.03
+        })
+        sceneTHR.rotation.y = frame * 0.05
       } else {
         sceneTHR.rotation.x = frame * 0.3
         sceneTHR.rotation.y = frame * 0.5
