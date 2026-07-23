@@ -29,7 +29,7 @@ export default function HomePage() {
             <Reveal delay={100}>
               <h1 className="hero__title">
                 <span><GlitchText text="LSCYTHE" /></span>
-                <span style={{ color: 'var(--accent)' }}>_</span>
+                <span style={{ color: 'var(--accent)', fontSize: '2rem', lineHeight: 1 }}>_</span>
               </h1>
             </Reveal>
 
