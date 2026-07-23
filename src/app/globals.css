@@ -642,3 +642,187 @@ a:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
   .cursor::after { animation: none; }
 }
+
+/* ── Extra animations ──────────────────────────────── */
+
+/* glitch keyframes for title/accent elements */
+@keyframes glitch-1 {
+  0%   { clip-path: inset(0 0 95% 0); transform: translate(-2px, 0); }
+  20%  { clip-path: inset(40% 0 50% 0); transform: translate(2px, 0); }
+  40%  { clip-path: inset(70% 0 10% 0); transform: translate(-1px, 0); }
+  60%  { clip-path: inset(10% 0 80% 0); transform: translate(1px, 0); }
+  80%  { clip-path: inset(60% 0 30% 0); transform: translate(-2px, 0); }
+  100% { clip-path: inset(0 0 95% 0); transform: translate(0, 0); }
+}
+
+@keyframes glitch-2 {
+  0%   { clip-path: inset(50% 0 30% 0); transform: translate(2px, 0); color: var(--accent2); }
+  25%  { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 0); }
+  50%  { clip-path: inset(80% 0 5%  0); transform: translate(1px, 0); color: var(--accent3); }
+  75%  { clip-path: inset(5%  0 75% 0); transform: translate(-1px, 0); }
+  100% { clip-path: inset(50% 0 30% 0); transform: translate(2px, 0); color: var(--accent2); }
+}
+
+/* hero title glitch on load */
+.hero__title {
+  position: relative;
+}
+.hero__title::before,
+.hero__title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.hero__title:hover::before {
+  opacity: 1;
+  animation: glitch-1 0.4s steps(1) infinite;
+  color: var(--accent2);
+}
+.hero__title:hover::after {
+  opacity: 1;
+  animation: glitch-2 0.4s steps(1) infinite 0.1s;
+  color: var(--accent3);
+}
+
+/* status chip pulse on hover */
+.status-chip--green:hover {
+  animation: pulse-green 0.6s ease infinite alternate;
+}
+@keyframes pulse-green {
+  from { box-shadow: 0 0 0px rgba(0,255,136,0.3); }
+  to   { box-shadow: 0 0 12px rgba(0,255,136,0.6), 0 0 24px rgba(0,255,136,0.2); }
+}
+
+/* tag hover glow */
+.tag:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(0,255,136,0.2);
+  transition: all 0.15s;
+}
+
+/* nav link underline slide */
+.nav__links li a {
+  position: relative;
+  overflow: hidden;
+}
+.nav__links li a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1px;
+  background: var(--accent);
+  transition: width 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.nav__links li a:hover::after { width: 100%; }
+
+/* project row number counter pulse */
+.project-row:hover .project-row__num,
+.proj-row:hover .proj-row__num {
+  text-shadow: 0 0 8px var(--accent);
+}
+
+/* deco-bar shimmer */
+.deco-bar {
+  overflow: hidden;
+  position: relative;
+}
+.deco-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%   { left: -60%; }
+  100% { left: 160%; }
+}
+
+/* principle circle spin */
+.principle__circle {
+  animation: spin-slow 8s linear infinite;
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* about page identity panel 3d perspective */
+.about-page__identity {
+  perspective: 1200px;
+}
+
+/* article title entrance */
+.article-title {
+  animation: slide-up 0.6s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* back-link arrow slide */
+.back-link:hover {
+  gap: 0.75rem;
+  transition: gap 0.2s ease, color 0.15s;
+}
+
+/* system bar scroll marquee */
+.system-bar {
+  position: relative;
+  overflow: hidden;
+}
+.system-bar-inner {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* stat block hover */
+.stat-block {
+  transition: transform 0.2s ease;
+}
+.stat-block:hover {
+  transform: translateY(-3px);
+}
+
+/* article content link hover */
+.article-content a:hover {
+  background: rgba(61,154,255,0.1);
+  padding: 0 2px;
+  transition: background 0.15s;
+}
+
+/* code block hover */
+.article-content pre:hover {
+  border-left-color: var(--accent2);
+  transition: border-left-color 0.2s;
+}
+
+/* ascii illustration entrance */
+.ascii-block {
+  position: relative;
+  overflow: hidden;
+}
+.ascii-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scan-line 2.5s ease-in-out infinite;
+}
+@keyframes scan-line {
+  0%   { top: 0;    opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+

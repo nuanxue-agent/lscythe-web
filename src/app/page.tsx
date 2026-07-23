@@ -1,10 +1,10 @@
 import Link from 'next/link'
-
 import { getAllProjects } from '@/lib/content'
 import Reveal from '@/components/Reveal'
 import Counter from '@/components/Counter'
-
 import HeroCanvas from '@/components/HeroCanvasWrapper'
+import GlitchText from '@/components/GlitchText'
+import TiltCard from '@/components/TiltCard'
 
 export const metadata = {
   title: 'lscythe',
@@ -18,7 +18,7 @@ export default function HomePage() {
     <>
       <div className="deco-bar"><span /><span /><span /><span /><span /></div>
 
-      {/* ── Hero ── */}
+      {/* Hero */}
       <section className="hero scanlines">
         <div className="hero__left">
           <Reveal>
@@ -28,7 +28,7 @@ export default function HomePage() {
           <div>
             <Reveal delay={100}>
               <h1 className="hero__title">
-                <span>LSCYTHE</span>
+                <span><GlitchText text="LSCYTHE" /></span>
                 <span style={{ color: 'var(--accent)' }}>_</span>
               </h1>
             </Reveal>
@@ -58,7 +58,7 @@ export default function HomePage() {
                 { label: 'projects', val: 10, suffix: '+' },
                 { label: 'blog posts', val: 10, suffix: '+' },
               ].map(({ label, val, suffix = '' }) => (
-                <div key={label}>
+                <div key={label} className="stat-block">
                   <div style={{
                     fontFamily: 'var(--mono)',
                     fontSize: 'clamp(1.8rem,3vw,2.5rem)',
@@ -87,7 +87,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Selected work ── */}
+      {/* Selected work */}
       <section className="objects">
         <Reveal className="objects__heading">
           <p className="section-heading__num prompt">selected_work</p>
@@ -97,18 +97,22 @@ export default function HomePage() {
         <div className="objects__list">
           {featured.map((project, i) => (
             <Reveal key={project.slug} delay={i * 80}>
-              <Link href={`/projects/${project.slug}`} className="project-row">
-                <span className="project-row__num">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <div className="project-row__title">{project.title}</div>
-                  <div className="project-row__desc">{project.description}</div>
-                </div>
-                <div className="project-row__tags">
-                  {project.tags.slice(0, 3).map(t => (
-                    <span key={t} className="tag">{t}</span>
-                  ))}
-                </div>
-              </Link>
+              <TiltCard intensity={4}>
+                <Link href={`/projects/${project.slug}`} className="project-row">
+                  <span className="project-row__num">{String(i + 1).padStart(2, '0')}</span>
+                  <div>
+                    <div className="project-row__title">
+                      <GlitchText text={project.title} />
+                    </div>
+                    <div className="project-row__desc">{project.description}</div>
+                  </div>
+                  <div className="project-row__tags">
+                    {project.tags.slice(0, 3).map(t => (
+                      <span key={t} className="tag">{t}</span>
+                    ))}
+                  </div>
+                </Link>
+              </TiltCard>
             </Reveal>
           ))}
           <Reveal delay={240}>
@@ -121,7 +125,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Principle ── */}
+      {/* Principle */}
       <Reveal>
         <section className="principle">
           <div className="principle__quote">
@@ -139,7 +143,7 @@ export default function HomePage() {
         </section>
       </Reveal>
 
-      {/* ── Footer ── */}
+      {/* Footer */}
       <footer style={{
         padding: '1.25rem 2rem',
         borderTop: '1px solid var(--border)',
@@ -152,6 +156,7 @@ export default function HomePage() {
         color: 'var(--dim)',
       }}>
         <span>lscythe.dev</span>
+        <span style={{ color: 'var(--dim)', fontSize: '0.55rem' }}>press ` to open terminal</span>
         <span style={{ color: 'var(--accent)' }}>■</span>
         <span>{new Date().getFullYear()}</span>
       </footer>
