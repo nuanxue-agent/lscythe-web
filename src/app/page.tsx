@@ -5,6 +5,7 @@ import Counter from '@/components/Counter'
 import HeroCanvas from '@/components/HeroCanvasWrapper'
 import GlitchText from '@/components/GlitchText'
 import TiltCard from '@/components/TiltCard'
+import ArticleSceneWrapper from '@/components/ArticleSceneWrapper'
 
 export const metadata = {
   title: 'lscythe',
@@ -135,7 +136,9 @@ export default function HomePage() {
             </blockquote>
           </div>
           <div className="principle__aside">
-            <div className="principle__circle" />
+            <div style={{ position: 'relative', width: '100%', flex: 1, minHeight: '140px' }}>
+              <ArticleSceneWrapper slug="principle-rings" sceneOverride="rings" />
+            </div>
             <span className="principle__aside-label">
               working principle<br />lscythe / 2026
             </span>

@@ -567,24 +567,50 @@ a:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
   display: flex; align-items: center; justify-content: center;
   flex-direction: column; gap: 1.5rem; padding: 4rem 2rem; text-align: center;
 }
+.notfound-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 100px);
+  border-bottom: 1px solid var(--border);
+}
+.notfound-scene {
+  position: relative;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  min-height: 60vh;
+}
+.notfound-scene__fade {
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to right, transparent 40%, var(--black) 100%);
+  pointer-events: none;
+}
+.notfound-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 4rem 3rem;
+  gap: 2rem;
+}
 .notfound-num {
-  font-size: clamp(6rem, 20vw, 14rem);
+  font-size: clamp(5rem, 14vw, 10rem);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.05em;
-  color: var(--accent);
-  text-shadow: 0 0 40px rgba(0,255,136,0.3), 0 0 80px rgba(0,255,136,0.1);
 }
 .notfound-label {
   font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
   color: var(--dim);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  padding: 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
 }
 .notfound-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--mono);
   font-size: 0.72rem;
   letter-spacing: 0.12em;

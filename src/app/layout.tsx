@@ -3,6 +3,7 @@ import './globals.css'
 import MouseSpotlight from '@/components/MouseSpotlight'
 import NoiseOverlay from '@/components/NoiseOverlay'
 import Terminal from '@/components/Terminal'
+import PageTransition from '@/components/PageTransition'
 
 export const metadata: Metadata = {
   title: { default: 'lscythe', template: '%s -- lscythe' },
@@ -29,11 +30,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <li><a href="/projects">projects</a></li>
               <li><a href="/blog">writing</a></li>
               <li><a href="/experience">experience</a></li>
-              <li><a href="/about">about</a></li>
               <li><a href="/contact">contact</a></li>
+              <li><a href="/about">about</a></li>
             </ul>
           </nav>
-          <main>{children}</main>
+          <main>
+            <PageTransition>{children}</PageTransition>
+          </main>
         </div>
         <Terminal />
       </body>
