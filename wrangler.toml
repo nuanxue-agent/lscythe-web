@@ -1,8 +1,9 @@
-# https://developers.cloudflare.com/pages/configuration/build-configuration/
+name = "lscythe-web"
+pages_build_output_dir = "out"
+
 [build]
-  command = "npm run build && npx @cloudflare/next-on-pages"
-  destination = ".vercel/output/static"
+command = "npm run build"
 
 [build.environment]
-  NODE_VERSION = "22"
-  NEXT_TELEMETRY_DISABLED = "1"
+NODE_VERSION = "22"
+NEXT_TELEMETRY_DISABLED = "1"
