@@ -36,7 +36,7 @@ export default function HomePage() {
             <Reveal delay={200}>
               <p className="hero__statement">
                 building <strong>Android</strong> systems, <strong>KMP</strong> libraries,
-                and developer tooling at <strong>Nocturn</strong>.<br />
+                and developer tooling at <strong>Nocturn</strong>.{' '}
                 obsessed with build performance, architecture that scales,
                 and the gap between how apps are designed and how they actually run.
               </p>
