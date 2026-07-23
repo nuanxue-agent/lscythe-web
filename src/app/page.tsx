@@ -1,9 +1,14 @@
 import Link from 'next/link'
+
 import { getAllProjects } from '@/lib/content'
+import Reveal from '@/components/Reveal'
+import Counter from '@/components/Counter'
+
+import HeroCanvas from '@/components/HeroCanvasWrapper'
 
 export const metadata = {
-  title: 'lscythe — form, type, function',
-  description: 'designer & developer working at the intersection of form, type, and function.',
+  title: 'lscythe — rendra prasetia',
+  description: 'Android engineer from Jakarta. Building mobile systems, KMP libraries, and developer tooling.',
 }
 
 export default function HomePage() {
@@ -11,61 +16,89 @@ export default function HomePage() {
 
   return (
     <>
-      {/* deco bar */}
-      <div className="deco-bar">
-        <span /><span /><span /><span /><span />
-      </div>
+      <div className="deco-bar"><span /><span /><span /><span /><span /></div>
 
       {/* ── Hero ── */}
-      <section className="hero">
+      <section className="hero scanlines">
         <div className="hero__left">
-          <span className="hero__kicker">01 / form, type, function</span>
+          <Reveal>
+            <span className="hero__kicker prompt">android engineer / jakarta / est. 2019</span>
+          </Reveal>
 
-          <h1 className="hero__title">
-            <span>l.</span>
-            <span>scythe</span>
-          </h1>
+          <div>
+            <Reveal delay={100}>
+              <h1 className="hero__title">
+                <span>RENDRA</span>
+                <span>PRASETIA</span>
+              </h1>
+            </Reveal>
 
-          <p className="hero__statement">
-            a designer &amp; developer working at the intersection of{' '}
-            <strong>structured systems</strong> and{' '}
-            <strong>expressive form</strong>.
-            objects made with intention.
-          </p>
+            <Reveal delay={200}>
+              <p className="hero__statement">
+                building <strong>Android</strong> systems, <strong>KMP</strong> libraries,
+                and developer tooling at <strong>Nocturn</strong>.<br />
+                obsessed with build performance, architecture that scales,
+                and the gap between how apps are designed and how they actually run.
+              </p>
+            </Reveal>
+
+            <Reveal delay={300}>
+              <div className="hero__status">
+                <span className="status-chip status-chip--green">[AVAILABLE]</span>
+                <span className="status-chip status-chip--blue">[ANDROID]</span>
+                <span className="status-chip status-chip--pink">[KMP]</span>
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={400}>
+            <div style={{ display: 'flex', gap: '3rem', marginTop: '1rem' }}>
+              {[
+                { label: 'years exp', val: 6 },
+                { label: 'projects', val: 10, suffix: '+' },
+                { label: 'blog posts', val: 10, suffix: '+' },
+              ].map(({ label, val, suffix = '' }) => (
+                <div key={label}>
+                  <div style={{
+                    fontFamily: 'var(--mono)',
+                    fontSize: 'clamp(1.8rem,3vw,2.5rem)',
+                    fontWeight: 900,
+                    color: 'var(--accent)',
+                    lineHeight: 1,
+                  }}>
+                    <Counter value={val} suffix={suffix} />
+                  </div>
+                  <div style={{
+                    fontFamily: 'var(--mono)',
+                    fontSize: '0.62rem',
+                    color: 'var(--dim)',
+                    letterSpacing: '0.12em',
+                    marginTop: '0.3rem',
+                  }}>{label}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
 
         <div className="hero__right">
-          <div className="hero__geo">
-            <div className="geo-circle" />
-            <div className="geo-rect" />
-            <div className="geo-tri" />
-          </div>
-          <span className="hero__label">bauhaus</span>
+          <HeroCanvas />
+          <span className="hero__canvas-label prompt">3d / interactive</span>
         </div>
       </section>
 
-      {/* ── Featured projects ── */}
+      {/* ── Selected work ── */}
       <section className="objects">
-        <div className="objects__heading">
-          <div className="section-heading__num">02</div>
-          <h2>selected<br />objects</h2>
-        </div>
+        <Reveal className="objects__heading">
+          <p className="section-heading__num prompt">selected_work</p>
+          <h2>featured<br />projects</h2>
+        </Reveal>
 
         <div className="objects__list">
-          {featured.length === 0 ? (
-            <div style={{ padding: '2rem', opacity: 0.4, fontSize: '0.85rem' }}>
-              no projects yet
-            </div>
-          ) : (
-            featured.map((project, i) => (
-              <Link
-                key={project.slug}
-                href={`/projects/${project.slug}`}
-                className="project-row"
-              >
-                <span className="project-row__num">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
+          {featured.map((project, i) => (
+            <Reveal key={project.slug} delay={i * 80}>
+              <Link href={`/projects/${project.slug}`} className="project-row">
+                <span className="project-row__num">{String(i + 1).padStart(2, '0')}</span>
                 <div>
                   <div className="project-row__title">{project.title}</div>
                   <div className="project-row__desc">{project.description}</div>
@@ -76,49 +109,50 @@ export default function HomePage() {
                   ))}
                 </div>
               </Link>
-            ))
-          )}
-          <Link
-            href="/projects"
-            className="project-row"
-            style={{ opacity: 0.5 }}
-          >
-            <span className="project-row__num">→</span>
-            <div>
-              <div className="project-row__title">all projects</div>
-            </div>
-            <div />
-          </Link>
+            </Reveal>
+          ))}
+          <Reveal delay={240}>
+            <Link href="/projects" className="project-row" style={{ opacity: 0.45 }}>
+              <span className="project-row__num">→</span>
+              <div><div className="project-row__title">all projects</div></div>
+              <div />
+            </Link>
+          </Reveal>
         </div>
       </section>
 
       {/* ── Principle ── */}
-      <section className="principle">
-        <div className="principle__quote">
-          <blockquote>
-            "form ever follows function — and this is the law."
-          </blockquote>
-        </div>
-        <div className="principle__aside">
-          <div className="principle__circle" />
-          <span className="principle__aside-label">
-            louis sullivan<br />1896
-          </span>
-        </div>
-      </section>
+      <Reveal>
+        <section className="principle">
+          <div className="principle__quote">
+            <blockquote>
+              "complexity is not a feature.<br />
+              it's a failure of design."
+            </blockquote>
+          </div>
+          <div className="principle__aside">
+            <div className="principle__circle" />
+            <span className="principle__aside-label">
+              working principle<br />lscythe / 2026
+            </span>
+          </div>
+        </section>
+      </Reveal>
 
-      {/* ── Footer strip ── */}
+      {/* ── Footer ── */}
       <footer style={{
         padding: '1.25rem 2rem',
-        borderTop: '2px solid var(--ink)',
+        borderTop: '1px solid var(--border)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        fontSize: '0.7rem',
+        fontFamily: 'var(--mono)',
+        fontSize: '0.62rem',
         letterSpacing: '0.1em',
-        opacity: 0.5,
+        color: 'var(--dim)',
       }}>
-        <span>lscythe</span>
+        <span>lscythe.dev</span>
+        <span style={{ color: 'var(--accent)' }}>■</span>
         <span>{new Date().getFullYear()}</span>
       </footer>
     </>
