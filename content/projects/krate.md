@@ -70,9 +70,9 @@ prefs.userId = "abc123"  // suspend setter
 
 i could have used reflection to read the interface at runtime. i chose KSP because:
 
-1. **performance** — the implementation is generated at compile time, no reflection overhead
-2. **correctness** — if your interface declares an unsupported type, KSP fails at compile time
-3. **multiplatform** — KSP works in KMP, reflection doesn't
+1. **performance** - the implementation is generated at compile time, no reflection overhead
+2. **correctness** - if your interface declares an unsupported type, KSP fails at compile time
+3. **multiplatform** - KSP works in KMP, reflection doesn't
 
 ## supported types
 
@@ -87,7 +87,7 @@ internally, this serializes `UserProfile` to json and stores it as a string. not
 
 ## migration from SharedPreferences
 
-krate includes a migration helper that reads from SharedPreferences and writes to DataStore on first access. this makes migration incremental — you can migrate one preference at a time without breaking existing code.
+krate includes a migration helper that reads from SharedPreferences and writes to DataStore on first access. this makes migration incremental - you can migrate one preference at a time without breaking existing code.
 
 ## current status
 

@@ -4,12 +4,12 @@ import matter from 'gray-matter'
 import { markdownToHtml } from '@/lib/markdown'
 
 export const metadata = {
-  title: 'about — lscythe',
+  title: 'about - lscythe',
   description: 'designer & developer. form, type, function.',
 }
 
 export default function AboutPage() {
-  // Read content/about.md — fall back to default copy if missing
+  // Read content/about.md - fall back to default copy if missing
   const aboutPath = path.join(process.cwd(), 'content', 'about.md')
   let name = 'l. scythe'
   let role = 'designer & developer'

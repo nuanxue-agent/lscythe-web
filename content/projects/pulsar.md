@@ -9,7 +9,7 @@ year: "2023"
 featured: false
 ---
 
-websockets on android are straightforward. OkHttp has a solid websocket implementation, you implement `WebSocketListener`, and you're done. the problem is that websocket *management* — reconnection, state handling, message queuing across disconnections — is not straightforward. every project i've seen rolls its own reconnection logic, and it's usually wrong in subtle ways.
+websockets on android are straightforward. OkHttp has a solid websocket implementation, you implement `WebSocketListener`, and you're done. the problem is that websocket *management* - reconnection, state handling, message queuing across disconnections - is not straightforward. every project i've seen rolls its own reconnection logic, and it's usually wrong in subtle ways.
 
 pulsar is the websocket manager i kept wanting to extract and reuse.
 
@@ -41,10 +41,10 @@ val client = PulsarClient.create(
 // connect and start receiving
 client.connect(scope)
 
-// send — queued if not connected
+// send - queued if not connected
 client.send(Message.Text("hello"))
 
-// receive — Flow with backpressure
+// receive - Flow with backpressure
 client.messages.collect { message ->
     handleMessage(message)
 }
@@ -63,7 +63,7 @@ client.state.collect { state ->
 
 ## multiplatform
 
-pulsar targets android, JVM, and iOS. each platform has its own websocket implementation under the hood — OkHttp on android/JVM, NSURLSession on iOS — but the API surface is identical. the reconnection logic, state machine, and message buffering are in the common module.
+pulsar targets android, JVM, and iOS. each platform has its own websocket implementation under the hood - OkHttp on android/JVM, NSURLSession on iOS - but the API surface is identical. the reconnection logic, state machine, and message buffering are in the common module.
 
 the state machine is implemented with a `Channel`-based event loop. connection events (opened, closed, error) are sent to a channel. a coroutine processes events and drives the reconnection logic. this keeps the state mutations single-threaded without blocking.
 

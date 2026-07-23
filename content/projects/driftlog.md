@@ -1,7 +1,7 @@
 ---
 title: driftlog
 description: an Android debug overlay that displays live Gradle build metrics, recomposition counts, and memory pressure in a floating HUD during development
-longDescription: driftlog is a debug-only floating HUD for android apps that surfaces information you normally need separate tools to see — build time for the last incremental build, recomposition counts per composable, heap usage, GC events, and frame drop rates — all in a draggable overlay on the device screen.
+longDescription: driftlog is a debug-only floating HUD for android apps that surfaces information you normally need separate tools to see - build time for the last incremental build, recomposition counts per composable, heap usage, GC events, and frame drop rates - all in a draggable overlay on the device screen.
 tags: [android, debugging, compose, gradle, performance]
 repo: https://git.lscythe.dev/lscythe/driftlog
 status: archived
@@ -17,13 +17,13 @@ driftlog's pitch was simple: put the most useful development metrics on the devi
 
 the overlay had four panels, each toggleable:
 
-**build panel** — the elapsed time for the last incremental gradle build that produced the current running APK. this came from a gradle plugin that wrote a metadata file to the APK's assets on every build. driftlog read the file at app startup and displayed the build time. crude but effective.
+**build panel** - the elapsed time for the last incremental gradle build that produced the current running APK. this came from a gradle plugin that wrote a metadata file to the APK's assets on every build. driftlog read the file at app startup and displayed the build time. crude but effective.
 
-**recompose panel** — per-composable recomposition counts since the last screen navigation. this used compose's `RecompositionCounter` API (internal at the time, which was a problem) to count recompositions per composable by name. the panel listed the top 5 composables by recomposition count with a color-coded frequency indicator.
+**recompose panel** - per-composable recomposition counts since the last screen navigation. this used compose's `RecompositionCounter` API (internal at the time, which was a problem) to count recompositions per composable by name. the panel listed the top 5 composables by recomposition count with a color-coded frequency indicator.
 
-**memory panel** — heap used vs heap available, updated every 2 seconds. a simple line graph showing the last 30 seconds of memory usage. GC events were marked with vertical lines on the graph.
+**memory panel** - heap used vs heap available, updated every 2 seconds. a simple line graph showing the last 30 seconds of memory usage. GC events were marked with vertical lines on the graph.
 
-**frame panel** — frame drop count and jank percentage (frames that took over 16ms) over the last 10 seconds. derived from the `Choreographer` frame callback API.
+**frame panel** - frame drop count and jank percentage (frames that took over 16ms) over the last 10 seconds. derived from the `Choreographer` frame callback API.
 
 ## the draggable HUD
 
@@ -39,10 +39,10 @@ first: compose's `RecompositionCounter` API was internal and got removed in a co
 
 second: android studio's device mirroring and live metrics got significantly better in 2024. the gap between "information on device" and "information in the IDE" closed enough that driftlog's value proposition got weaker. keeping an app overlay in sync with AGP changes, compose internals, and device API changes is ongoing work that i stopped wanting to do.
 
-the build time panel was the one genuinely novel thing — android studio doesn't show you the build time of the APK currently running on the device. if i revived this project, that's the only panel i'd keep.
+the build time panel was the one genuinely novel thing - android studio doesn't show you the build time of the APK currently running on the device. if i revived this project, that's the only panel i'd keep.
 
 ## what i learned
 
 don't build tools that depend on internal APIs. the recomposition counting relied on a `@VisibleForTesting` annotation that was basically a "here's how we test this, not for public use" signal, and i ignored it. it broke. this was predictable.
 
-debug tooling also has a higher maintenance cost than it appears because it needs to stay compatible with a fast-moving ecosystem — AGP, compose, android APIs. if the tooling breaks, nobody's app stops working, so it's easy to deprioritize. over time, it bit-rots.
+debug tooling also has a higher maintenance cost than it appears because it needs to stay compatible with a fast-moving ecosystem - AGP, compose, android APIs. if the tooling breaks, nobody's app stops working, so it's easy to deprioritize. over time, it bit-rots.

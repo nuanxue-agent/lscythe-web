@@ -14,7 +14,7 @@ not always wrong. but usually.
 
 ## what a state machine actually needs
 
-a proper state machine has states, transitions, guards, and side effects. the transitions are explicit. each state knows which transitions are valid from it. you can't move from `Loading` to `Error` without going through `Loaded` first — that would be an invalid transition, and the machine enforces it.
+a proper state machine has states, transitions, guards, and side effects. the transitions are explicit. each state knows which transitions are valid from it. you can't move from `Loading` to `Error` without going through `Loaded` first - that would be an invalid transition, and the machine enforces it.
 
 none of that is what most "MVI ViewModels" do. what they actually do is hold a mutable state object, expose it as a `StateFlow`, and have a `reduce()` function that takes an action and returns a new state. that's not a state machine. that's a reducer. there's a difference.
 
@@ -58,13 +58,13 @@ ViewModel's job is lifecycle management and scope. it survives configuration cha
 
 that's it. that's the whole contract.
 
-the business logic of your screen — the transitions, the rules about what can happen when — that doesn't belong in ViewModel. it belongs in domain-layer objects that ViewModel happens to call. ViewModel is a bridge, not a brain.
+the business logic of your screen - the transitions, the rules about what can happen when - that doesn't belong in ViewModel. it belongs in domain-layer objects that ViewModel happens to call. ViewModel is a bridge, not a brain.
 
 ---
 
 ## what i do instead
 
-for screens with real state machine complexity, i build an explicit state machine — usually a simple class with a `StateFlow<ScreenState>` and functions that represent valid transitions. the state machine knows what's valid; the ViewModel just calls it.
+for screens with real state machine complexity, i build an explicit state machine - usually a simple class with a `StateFlow<ScreenState>` and functions that represent valid transitions. the state machine knows what's valid; the ViewModel just calls it.
 
 for screens that are mostly displaying data from a repository, i skip the sealed class entirely. a `data class` with nullable fields and a `isLoading` boolean is honest about what it is. it's not trying to be a state machine. it's just state.
 
@@ -74,6 +74,6 @@ the mistake is using the same abstraction for both. a checkout flow with multipl
 
 ## the real cost
 
-the thing that finally convinced me was reading. when i pick up a ViewModel that's 600 lines long and has a 40-branch `reduce()` function, i have no idea what the screen does. i have to reverse-engineer the state machine from the code. if you'd written the state machine explicitly — states, transitions, guards — i'd know immediately.
+the thing that finally convinced me was reading. when i pick up a ViewModel that's 600 lines long and has a 40-branch `reduce()` function, i have no idea what the screen does. i have to reverse-engineer the state machine from the code. if you'd written the state machine explicitly - states, transitions, guards - i'd know immediately.
 
 readability is not a nice-to-have. it's where maintenance cost lives.

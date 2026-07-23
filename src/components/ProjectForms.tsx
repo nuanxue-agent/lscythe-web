@@ -6,9 +6,9 @@ import { useEffect, useRef } from 'react'
    ProjectForms
    Animated geometric forms used as visual accents on project
    list items. Each item type maps to a Bauhaus primary shape:
-     circle  — red    — identity / brand projects
-     square  — blue   — engineering / systems
-     line    — ochre  — writing / research
+     circle  - red    - identity / brand projects
+     square  - blue   - engineering / systems
+     line    - ochre  - writing / research
    ------------------------------------------------------------ */
 
 type FormShape = 'circle' | 'square' | 'line'
@@ -20,7 +20,7 @@ interface ProjectFormProps {
   scale?: number
   /** Whether to play the entrance animation */
   animated?: boolean
-  /** Accessible label — omit to inherit aria-hidden from parent */
+  /** Accessible label - omit to inherit aria-hidden from parent */
   label?: string
   className?: string
 }
@@ -163,10 +163,10 @@ export function ProjectForm({
   )
 }
 
-/* ── ProjectFormSet — convenience wrapper for list items ── */
+/* ── ProjectFormSet - convenience wrapper for list items ── */
 
 interface ProjectFormSetProps {
-  /** Shape to use — inferred from index if omitted */
+  /** Shape to use - inferred from index if omitted */
   shape?: FormShape
   /** 0-based list index; cycles through circle → square → line */
   index?: number

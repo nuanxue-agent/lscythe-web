@@ -15,7 +15,7 @@ vektor is what i wanted those libraries to be.
 
 ## the model
 
-a vektor state machine is defined as a graph of states and transitions. states are data classes. transitions are typed — each transition specifies the source state type, a trigger (an event class), and a target state. transitions are suspending functions, so they can do async work — network calls, database reads, delays — as part of the transition logic.
+a vektor state machine is defined as a graph of states and transitions. states are data classes. transitions are typed - each transition specifies the source state type, a trigger (an event class), and a target state. transitions are suspending functions, so they can do async work - network calls, database reads, delays - as part of the transition logic.
 
 ```kotlin
 val machine = stateMachine<LoginState> {
@@ -65,4 +65,4 @@ this was inspired by redux devtools. the ability to see "the machine was in stat
 
 ## current status
 
-the core library and android target are stable. the debugger is functional but the UI needs work. compose multiplatform iOS target is in progress — the state machine itself works on iOS but the debugger socket bridge needs platform-specific implementation.
+the core library and android target are stable. the debugger is functional but the UI needs work. compose multiplatform iOS target is in progress - the state machine itself works on iOS but the debugger socket bridge needs platform-specific implementation.

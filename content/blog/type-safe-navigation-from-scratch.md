@@ -6,7 +6,7 @@ tags: [android, compose, navigation, kotlin]
 draft: false
 ---
 
-i spent a weekend building type-safe navigation without using navigation-compose or any third-party routing library. not because those libraries are bad — they're fine — but because i wanted to understand what the actual problem is and what a minimal solution looks like.
+i spent a weekend building type-safe navigation without using navigation-compose or any third-party routing library. not because those libraries are bad - they're fine - but because i wanted to understand what the actual problem is and what a minimal solution looks like.
 
 the result is 150 lines of code that handles backstack management, argument passing, and type safety. it's not production-ready but it taught me more about navigation than using a library ever did.
 
@@ -16,10 +16,10 @@ the result is 150 lines of code that handles backstack management, argument pass
 
 navigation in compose apps has a few requirements:
 
-1. **destinations** — screens you can navigate to
-2. **arguments** — data passed to those screens
-3. **backstack** — history of where you've been
-4. **type safety** — compile-time guarantees that arguments match what the destination expects
+1. **destinations** - screens you can navigate to
+2. **arguments** - data passed to those screens
+3. **backstack** - history of where you've been
+4. **type safety** - compile-time guarantees that arguments match what the destination expects
 
 the standard approach is to use string routes with path parameters: `"profile/{userId}"`. you parse the userId from the route and hope it's an Int. this works but it's not type-safe. if someone passes a malformed route, you get a runtime error.
 
@@ -154,11 +154,11 @@ the `when` expression is exhaustive because `Destination` is sealed. if you add 
 
 this is a toy implementation. production navigation needs:
 
-- **animations** — shared element transitions, slide-in/out
-- **saved state** — preserve scroll position and form input across backstack changes
-- **nested navigation** — tabs with independent backstacks
-- **single-top / single-task** — launch modes for deduplication
-- **lifecycle integration** — properly handle process death and restoration
+- **animations** - shared element transitions, slide-in/out
+- **saved state** - preserve scroll position and form input across backstack changes
+- **nested navigation** - tabs with independent backstacks
+- **single-top / single-task** - launch modes for deduplication
+- **lifecycle integration** - properly handle process death and restoration
 
 all of these are solvable, but they're not trivial. navigation-compose handles them. this implementation doesn't.
 
@@ -166,7 +166,7 @@ all of these are solvable, but they're not trivial. navigation-compose handles t
 
 ## why i built it anyway
 
-before i wrote this, i thought navigation was complex because routing is inherently hard. after writing it, i think navigation is complex because android lifecycle is hard and animations are hard. the core routing logic — matching destinations to screens — is simple.
+before i wrote this, i thought navigation was complex because routing is inherently hard. after writing it, i think navigation is complex because android lifecycle is hard and animations are hard. the core routing logic - matching destinations to screens - is simple.
 
 understanding the simple version makes it easier to understand what the library is doing and when its abstractions are helping vs. getting in the way. sometimes you need to build the thing to know whether you should use the library.
 

@@ -16,10 +16,10 @@ i'm not arguing against feature flags. i'm arguing that most teams don't treat t
 
 the legitimate use cases for feature flags:
 
-1. **gradual rollout** — ship to 5%, validate, ramp to 100%
-2. **kill switch** — disable a broken feature remotely without a new build
-3. **a/b testing** — show different implementations to different cohorts
-4. **in-development work** — merge code behind a flag, enable when ready
+1. **gradual rollout** - ship to 5%, validate, ramp to 100%
+2. **kill switch** - disable a broken feature remotely without a new build
+3. **a/b testing** - show different implementations to different cohorts
+4. **in-development work** - merge code behind a flag, enable when ready
 
 all of these are reasonable. the problem is what happens after the flag serves its purpose.
 
@@ -41,9 +41,9 @@ now you have dead code gated by a permanent flag. it's not executed, but it's st
 
 ## the testing problem
 
-every feature flag doubles your test surface. if you have 5 flags, you theoretically have 32 possible states. you don't test all 32 — that's infeasible — so you test the combinations you think matter. which means there are untested states.
+every feature flag doubles your test surface. if you have 5 flags, you theoretically have 32 possible states. you don't test all 32 - that's infeasible - so you test the combinations you think matter. which means there are untested states.
 
-i've debugged production crashes that only occurred when `flag_a = true` and `flag_b = false` — a combination we never tested because we assumed both would be enabled together. the flags were independent at the config layer but the code had implicit dependencies. the crash only surfaced when rollout schedules diverged.
+i've debugged production crashes that only occurred when `flag_a = true` and `flag_b = false` - a combination we never tested because we assumed both would be enabled together. the flags were independent at the config layer but the code had implicit dependencies. the crash only surfaced when rollout schedules diverged.
 
 the more flags you have, the more this scales poorly. every new flag interacts with every existing flag in ways you haven't thought about.
 
@@ -63,7 +63,7 @@ here's the process for removing a flag:
 
 this is tedious. it's not glamorous. nobody wants to do it. so it doesn't get done.
 
-i've seen codebases with flags from 2021 still in the code in 2026. not because anyone decided they should stay — because nobody had time to do the cleanup work. the longer it sits, the scarier it becomes to touch, because you're less confident you understand what it affects.
+i've seen codebases with flags from 2021 still in the code in 2026. not because anyone decided they should stay - because nobody had time to do the cleanup work. the longer it sits, the scarier it becomes to touch, because you're less confident you understand what it affects.
 
 ---
 

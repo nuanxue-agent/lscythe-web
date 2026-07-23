@@ -18,7 +18,7 @@ the most immediate argument for kotlin DSL is tooling. when you write gradle in 
 
 in groovy, none of that is reliable. groovy is dynamically typed, so the IDE is guessing. it guesses wrong constantly. you end up reading gradle docs in a browser tab because your IDE has no idea what `android { }` actually accepts.
 
-i've watched engineers copy-paste gradle snippets from stack overflow because they couldn't figure out what properties were available. that's not a skill issue — it's a tooling failure. kotlin DSL makes your build files first-class code.
+i've watched engineers copy-paste gradle snippets from stack overflow because they couldn't figure out what properties were available. that's not a skill issue - it's a tooling failure. kotlin DSL makes your build files first-class code.
 
 ---
 
@@ -26,12 +26,12 @@ i've watched engineers copy-paste gradle snippets from stack overflow because th
 
 when you extract build logic into `buildSrc` or a convention plugin (which you should be doing for any non-trivial project), the difference is even more stark.
 
-in groovy, you're writing convention plugins as groovy scripts or classes that get compiled without full type information. you can call properties that don't exist and the error shows up at the gradle execution phase — not when you're writing it, not at configuration time, but when gradle is trying to run.
+in groovy, you're writing convention plugins as groovy scripts or classes that get compiled without full type information. you can call properties that don't exist and the error shows up at the gradle execution phase - not when you're writing it, not at configuration time, but when gradle is trying to run.
 
 in kotlin DSL, a typo in a convention plugin is a compile error. the same guarantee that makes application code easier to maintain applies to build code.
 
 ```kotlin
-// kotlin DSL — the compiler knows what this is
+// kotlin DSL - the compiler knows what this is
 android {
     compileSdk = 35
     defaultConfig {
@@ -42,7 +42,7 @@ android {
 ```
 
 ```groovy
-// groovy — the IDE is guessing, you're praying
+// groovy - the IDE is guessing, you're praying
 android {
     compileSdkVersion 35
     defaultConfig {
@@ -56,7 +56,7 @@ android {
 
 ## version catalogs make this better
 
-if you're using version catalogs (you should be), kotlin DSL is the natural companion. the generated type-safe accessors — `libs.kotlin.stdlib`, `libs.compose.ui` — are real kotlin properties with autocomplete. in groovy you're back to string lookups.
+if you're using version catalogs (you should be), kotlin DSL is the natural companion. the generated type-safe accessors - `libs.kotlin.stdlib`, `libs.compose.ui` - are real kotlin properties with autocomplete. in groovy you're back to string lookups.
 
 ```kotlin
 dependencies {

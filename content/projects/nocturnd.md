@@ -69,7 +69,7 @@ this makes it trivial to build a debug screen showing the current state of all b
 
 ## observability
 
-the piece i'm most proud of is the execution log. nocturnd persists task execution events to a local Room database: start time, end time, exit reason, retry count, constraint satisfaction events. this makes post-hoc debugging possible — you can pull the execution log from a device and see exactly what happened and when.
+the piece i'm most proud of is the execution log. nocturnd persists task execution events to a local Room database: start time, end time, exit reason, retry count, constraint satisfaction events. this makes post-hoc debugging possible - you can pull the execution log from a device and see exactly what happened and when.
 
 before nocturnd, debugging why a background sync didn't run required instrumenting workers individually. now it's a query against the execution log.
 

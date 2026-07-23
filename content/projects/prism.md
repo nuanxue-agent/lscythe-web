@@ -9,7 +9,7 @@ year: "2024"
 featured: false
 ---
 
-screenshot testing on android has historically been painful. the standard approach is paparazzi or shot, both of which use Robolectric to render views. this works but it's slow — robolectric startup time is 5+ seconds per test class — and you're rendering with android framework stubs, not real rendering. the mismatch between test rendering and production rendering leads to false positives.
+screenshot testing on android has historically been painful. the standard approach is paparazzi or shot, both of which use Robolectric to render views. this works but it's slow - robolectric startup time is 5+ seconds per test class - and you're rendering with android framework stubs, not real rendering. the mismatch between test rendering and production rendering leads to false positives.
 
 prism takes a different approach: render with compose desktop, compare bitmaps, no android framework required.
 
@@ -40,9 +40,9 @@ pixel-perfect comparison is fragile. text rendering varies slightly across platf
 
 prism supports two diff modes:
 
-**pixel diff** — byte-level bitmap comparison with a configurable threshold. if more than N% of pixels differ by more than M units, the test fails.
+**pixel diff** - byte-level bitmap comparison with a configurable threshold. if more than N% of pixels differ by more than M units, the test fails.
 
-**semantic diff** — ignores specified elements. you can mark certain composables as `@Flaky` and prism will mask them out during comparison. useful for timestamps, loading indicators, or anything that changes between runs.
+**semantic diff** - ignores specified elements. you can mark certain composables as `@Flaky` and prism will mask them out during comparison. useful for timestamps, loading indicators, or anything that changes between runs.
 
 ```kotlin
 @ScreenshotTest(mode = DiffMode.SEMANTIC)

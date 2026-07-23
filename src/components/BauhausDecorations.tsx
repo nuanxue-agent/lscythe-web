@@ -4,7 +4,7 @@
    BauhausDecorations
    Three geometric shapes that form the visual identity of
    the site: circle (red), square (blue), diagonal bar (ochre).
-   Always aria-hidden — purely decorative.
+   Always aria-hidden - purely decorative.
    ------------------------------------------------------------ */
 
 interface BauhausDecorationsProps {

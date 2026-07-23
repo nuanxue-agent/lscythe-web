@@ -18,7 +18,7 @@ the problem is that `CoroutineContext` is one of those abstractions that works w
 
 a coroutine's context is composed from multiple sources: the parent coroutine's context, the scope's context, and whatever you pass explicitly. the combination happens at launch time through the `+` operator, which is actually `CombinedContext` internally.
 
-the part most people miss: **context elements are inherited, not shared**. when a child coroutine launches, it gets a copy of the parent's context elements, with its own `Job` instance. this is why structured concurrency works — the parent can track its children because every child holds a reference back through the job hierarchy.
+the part most people miss: **context elements are inherited, not shared**. when a child coroutine launches, it gets a copy of the parent's context elements, with its own `Job` instance. this is why structured concurrency works - the parent can track its children because every child holds a reference back through the job hierarchy.
 
 ---
 
@@ -30,9 +30,9 @@ here's the thing people miss: `withContext(Dispatchers.IO)` doesn't "move your c
 
 this matters because:
 
-1. if you're already on `Dispatchers.IO`, wrapping everything in another `withContext(Dispatchers.IO)` is a no-op — kotlin is smart enough to skip the context switch. but it still adds overhead if the dispatcher *does* change.
+1. if you're already on `Dispatchers.IO`, wrapping everything in another `withContext(Dispatchers.IO)` is a no-op - kotlin is smart enough to skip the context switch. but it still adds overhead if the dispatcher *does* change.
 
-2. `withContext` is a coroutine builder. it creates a new coroutine scope. that means any child coroutines you launch inside it are structured under that scope. if you cancel the outer coroutine, the `withContext` block gets cancelled too — but the jobs you launched inside might have different cancellation behavior depending on how they're structured.
+2. `withContext` is a coroutine builder. it creates a new coroutine scope. that means any child coroutines you launch inside it are structured under that scope. if you cancel the outer coroutine, the `withContext` block gets cancelled too - but the jobs you launched inside might have different cancellation behavior depending on how they're structured.
 
 3. if you wrap a `suspend fun` in `withContext(Dispatchers.IO)` at the call site, you've now made a decision about threading that belongs in the implementation, not the caller.
 
@@ -49,7 +49,7 @@ suspend fun loadUser(): User = withContext(Dispatchers.IO) {
 }
 ```
 
-where `repository.getUser()` is a Room `@Query` with `suspend` — which already dispatches to IO under the hood. you've just added an extra context switch for nothing.
+where `repository.getUser()` is a Room `@Query` with `suspend` - which already dispatches to IO under the hood. you've just added an extra context switch for nothing.
 
 the rule i follow: **the function that does the IO decides the dispatcher.** if you're writing a repository, own the dispatcher decision there. if you're writing a use case, trust that your data sources are correct. don't add `withContext` defensively at every layer.
 

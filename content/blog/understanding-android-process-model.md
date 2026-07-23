@@ -14,15 +14,15 @@ most android developers have a vague mental model of the process lifecycle: "and
 
 android assigns every process a priority. when the system needs memory, it kills the lowest-priority processes first. there are five priority levels, and the boundaries between them matter more than most people realize.
 
-**foreground process** — contains an activity the user is interacting with, or a service bound to that activity, or a service with `startForeground()`, or a broadcast receiver running `onReceive()`. these are almost never killed except in extreme memory pressure.
+**foreground process** - contains an activity the user is interacting with, or a service bound to that activity, or a service with `startForeground()`, or a broadcast receiver running `onReceive()`. these are almost never killed except in extreme memory pressure.
 
-**visible process** — contains an activity that's visible but not in the foreground (e.g., a dialog from another app is on top). still high priority. rarely killed.
+**visible process** - contains an activity that's visible but not in the foreground (e.g., a dialog from another app is on top). still high priority. rarely killed.
 
-**service process** — contains a started service (not foreground). this is where most background work lives. killed fairly aggressively when memory is tight.
+**service process** - contains a started service (not foreground). this is where most background work lives. killed fairly aggressively when memory is tight.
 
-**cached process** — the app is in the background with no active components. these are kept in an LRU cache but killed freely. this is where your app lives 90% of the time when the user isn't actively using it.
+**cached process** - the app is in the background with no active components. these are kept in an LRU cache but killed freely. this is where your app lives 90% of the time when the user isn't actively using it.
 
-**empty process** — process is kept around for faster restarts but has no active components. killed first.
+**empty process** - process is kept around for faster restarts but has no active components. killed first.
 
 ---
 
@@ -44,7 +44,7 @@ when your process is killed:
 - **restored:** activity backstack, intent extras, fragment arguments.
 - **maybe restored:** `onSaveInstanceState()` bundles if you implemented it.
 
-the `savedInstanceState` bundle is your only reliable way to preserve UI state across process death. it's limited to primitive types and parcelables. it's not for business logic state — it's for things like "which tab was selected" or "what text was in the input field."
+the `savedInstanceState` bundle is your only reliable way to preserve UI state across process death. it's limited to primitive types and parcelables. it's not for business logic state - it's for things like "which tab was selected" or "what text was in the input field."
 
 if you're storing important state in a ViewModel without persisting it to disk or `savedInstanceState`, you will lose it. this is not an edge case. this is normal android behavior.
 
@@ -60,7 +60,7 @@ this is the correct model for background work: persist the request, decouple the
 
 ## the service vs cached tradeoff
 
-a common mistake: running a background task in a started service to keep the process alive. this works — the process priority stays at "service process" instead of dropping to "cached." but it has a cost.
+a common mistake: running a background task in a started service to keep the process alive. this works - the process priority stays at "service process" instead of dropping to "cached." but it has a cost.
 
 service processes consume memory that could be used for cached processes. android's LRU cache holds around 16–20 cached processes depending on device RAM. keeping your app at service priority means you're evicting other apps from the cache more aggressively. the system runs worse.
 

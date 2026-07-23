@@ -31,9 +31,9 @@ and that's just the direct time cost. it doesn't count:
 
 here's the one that nobody talks about: slow builds change what engineers write.
 
-when a build takes 15 seconds, you iterate. you try things. you refactor freely. when it takes 4 minutes, you think harder before you type, which sounds good but isn't — it means you commit to approaches earlier and change them less. you accrue more debt around the modules that are expensive to rebuild.
+when a build takes 15 seconds, you iterate. you try things. you refactor freely. when it takes 4 minutes, you think harder before you type, which sounds good but isn't - it means you commit to approaches earlier and change them less. you accrue more debt around the modules that are expensive to rebuild.
 
-i watched this happen on a codebase i inherited. the `:app` module had grown to include things it had no business owning — logic that should have been in feature modules — because engineers kept adding things where they were sure a rebuild would be fast. the architecture decayed into the shape of the build graph.
+i watched this happen on a codebase i inherited. the `:app` module had grown to include things it had no business owning - logic that should have been in feature modules - because engineers kept adding things where they were sure a rebuild would be fast. the architecture decayed into the shape of the build graph.
 
 ---
 
@@ -55,7 +55,7 @@ i've spent more time on gradle optimization than i should have, so here's the ho
 
 the reason build times don't get fixed is that they're everyone's problem and nobody's responsibility. they show up in every engineer's daily experience but they don't map to any team's OKR.
 
-the fix is making someone responsible. at nocturn, i own the build system. my job includes treating build time regression as a bug — something that gets filed, tracked, and fixed, not just grumbled about in retros.
+the fix is making someone responsible. at nocturn, i own the build system. my job includes treating build time regression as a bug - something that gets filed, tracked, and fixed, not just grumbled about in retros.
 
 if your engineering org doesn't have someone who owns the build system, slow builds will keep getting slower. every new module someone adds is a little bit more weight on a scale that nobody's watching.
 
