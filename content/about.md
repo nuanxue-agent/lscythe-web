@@ -2,7 +2,7 @@
 title: about
 ---
 
-i'm rendra prasetia. i build android apps for a living and break them in my spare time.
+i'm lscythe. i build android apps for a living and break them in my spare time.
 
 based in jakarta. six years into this, mostly on the android side, currently at [nocturn](https://nocturn.id) — a fintech startup where i work on the mobile platform team. we're building the kind of infrastructure that most companies don't think about until something breaks at 2am during a payment flow.
 

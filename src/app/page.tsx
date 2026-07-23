@@ -7,7 +7,7 @@ import Counter from '@/components/Counter'
 import HeroCanvas from '@/components/HeroCanvasWrapper'
 
 export const metadata = {
-  title: 'lscythe — rendra prasetia',
+  title: 'lscythe',
   description: 'Android engineer from Jakarta. Building mobile systems, KMP libraries, and developer tooling.',
 }
 
@@ -28,8 +28,8 @@ export default function HomePage() {
           <div>
             <Reveal delay={100}>
               <h1 className="hero__title">
-                <span>RENDRA</span>
-                <span>PRASETIA</span>
+                <span>LSCYTHE</span>
+                <span style={{ color: 'var(--accent)' }}>_</span>
               </h1>
             </Reveal>
 
