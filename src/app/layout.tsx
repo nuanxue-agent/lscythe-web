@@ -28,7 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <ul className="nav__links">
               <li><a href="/projects">projects</a></li>
               <li><a href="/blog">writing</a></li>
+              <li><a href="/experience">experience</a></li>
               <li><a href="/about">about</a></li>
+              <li><a href="/contact">contact</a></li>
             </ul>
           </nav>
           <main>{children}</main>
