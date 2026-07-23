@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:cf": "next build",
+    "deploy": "node scripts/deploy.mjs",
     "start": "next start",
     "lint": "eslint",
     "cms": "node scripts/cms.mjs",
