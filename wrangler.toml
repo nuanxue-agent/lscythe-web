@@ -1,9 +1,2 @@
 name = "lscythe-web"
 pages_build_output_dir = "out"
-
-[build]
-command = "npm run build"
-
-[build.environment]
-NODE_VERSION = "22"
-NEXT_TELEMETRY_DISABLED = "1"
