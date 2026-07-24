@@ -1,249 +1,315 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import HeroCanvas from '@/components/HeroCanvasWrapper'
-import GlitchText from '@/components/GlitchText'
-
+import { useEffect, useRef } from 'react'
 import type { Project } from '@/lib/content'
 
-interface HomeVaporwaveProps {
-  featured: Project[]
+// Vaporwave 3D grid floor using canvas
+function VaporGrid() {
+  const ref = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = ref.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+    let frame = 0
+
+    const draw = () => {
+      const w = canvas.width = canvas.offsetWidth
+      const h = canvas.height = canvas.offsetHeight
+      ctx.clearRect(0, 0, w, h)
+
+      // sky gradient
+      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.55)
+      sky.addColorStop(0, '#0d0015')
+      sky.addColorStop(1, '#2d0a4e')
+      ctx.fillStyle = sky
+      ctx.fillRect(0, 0, w, h * 0.55)
+
+      // sun
+      const sunY = h * 0.38
+      const sunR = Math.min(w, h) * 0.14
+      const sunGrad = ctx.createRadialGradient(w/2, sunY, 0, w/2, sunY, sunR)
+      sunGrad.addColorStop(0, '#fffb00')
+      sunGrad.addColorStop(0.4, '#ff71ce')
+      sunGrad.addColorStop(1, 'transparent')
+      ctx.fillStyle = sunGrad
+      ctx.beginPath()
+      ctx.arc(w/2, sunY, sunR, 0, Math.PI * 2)
+      ctx.fill()
+
+      // sun stripes (horizontal cuts)
+      ctx.fillStyle = '#0d0015'
+      for (let i = 0; i < 7; i++) {
+        const y = sunY - sunR * 0.5 + i * sunR * 0.18
+        const thickness = 3 + i * 1.5
+        ctx.fillRect(w/2 - sunR, y, sunR * 2, thickness)
+      }
+
+      // horizon glow
+      const horizonGrad = ctx.createLinearGradient(0, h*0.5, 0, h*0.58)
+      horizonGrad.addColorStop(0, 'rgba(255,113,206,0.8)')
+      horizonGrad.addColorStop(1, 'transparent')
+      ctx.fillStyle = horizonGrad
+      ctx.fillRect(0, h*0.5, w, h*0.08)
+
+      // grid floor
+      const floorTop = h * 0.55
+      const floorBot = h
+      const horizon = floorTop
+      const vp = { x: w/2, y: horizon }
+
+      // vertical lines
+      const vLineCount = 20
+      for (let i = -vLineCount/2; i <= vLineCount/2; i++) {
+        const xBottom = w/2 + i * (w / vLineCount)
+        ctx.beginPath()
+        ctx.moveTo(vp.x, horizon)
+        ctx.lineTo(xBottom, floorBot)
+        const alpha = 0.15 + Math.abs(i) * 0.01
+        ctx.strokeStyle = `rgba(185,103,255,${Math.min(alpha, 0.5)})`
+        ctx.lineWidth = 1
+        ctx.stroke()
+      }
+
+      // horizontal lines with scroll animation
+      const hLineCount = 12
+      const scrollOffset = (frame * 0.6) % (h / hLineCount)
+      for (let i = 0; i <= hLineCount; i++) {
+        const t = i / hLineCount
+        const perspT = Math.pow(t, 2.5)
+        const y = horizon + perspT * (floorBot - horizon) + scrollOffset * perspT
+        if (y > floorBot) continue
+        const alpha = perspT * 0.6
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.lineTo(w, y)
+        ctx.strokeStyle = `rgba(255,113,206,${alpha})`
+        ctx.lineWidth = 1
+        ctx.stroke()
+      }
+
+      // floor gradient overlay
+      const floorGrad = ctx.createLinearGradient(0, floorTop, 0, floorBot)
+      floorGrad.addColorStop(0, 'rgba(13,0,21,0)')
+      floorGrad.addColorStop(1, 'rgba(13,0,21,0.85)')
+      ctx.fillStyle = floorGrad
+      ctx.fillRect(0, floorTop, w, floorBot - floorTop)
+
+      frame++
+      animId = requestAnimationFrame(draw)
+    }
+    draw()
+    return () => cancelAnimationFrame(animId)
+  }, [])
+
+  return <canvas ref={ref} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
 }
 
-export default function HomeVaporwave({ featured }: HomeVaporwaveProps) {
+interface Props { featured: Project[] }
+
+export default function HomeVaporwave({ featured }: Props) {
   return (
-    <>
-      {/* Full-width hero with floating 3D overlay */}
-      <section style={{ 
-        position: 'relative', 
-        minHeight: '100vh', 
-        overflow: 'hidden',
-        background: 'linear-gradient(180deg, var(--black) 0%, var(--surface) 100%)',
-      }}>
-        {/* 3D scene as background */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          opacity: 0.4,
-          zIndex: 0,
-        }}>
-          <HeroCanvas />
-        </div>
+    <div style={{ background: '#0d0015', minHeight: '100vh', fontFamily: '"Inter", sans-serif' }}>
 
-        {/* Gradient text overlay */}
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-          padding: '4rem 2rem',
-          textAlign: 'center',
-        }}>
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 style={{
-              fontSize: 'clamp(4rem, 12vw, 10rem)',
-              fontWeight: 900,
-              lineHeight: 0.9,
-              letterSpacing: '-0.05em',
-              textTransform: 'uppercase',
-              background: 'linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3))',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              marginBottom: '2rem',
-              filter: 'drop-shadow(0 0 40px rgba(255,113,206,0.5))',
-            }}>
-              <GlitchText text="LSCYTHE" />
-            </h1>
-          </motion.div>
+      {/* Hero */}
+      <section style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <VaporGrid />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            style={{
-              fontSize: 'clamp(1rem, 2vw, 1.4rem)',
-              maxWidth: '60ch',
-              color: 'var(--dim)',
-              lineHeight: 1.7,
-              marginBottom: '3rem',
-            }}
-          >
-            android engineer crafting <span style={{ color: 'var(--accent)' }}>mobile systems</span>,{' '}
-            <span style={{ color: 'var(--accent2)' }}>KMP libraries</span>, and{' '}
-            <span style={{ color: 'var(--accent3)' }}>developer tooling</span>
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'center' }}
-          >
-            {['android', 'kmp', 'available'].map((tag, i) => (
-              <span
-                key={tag}
-                className="vaporwave-float"
-                style={{
-                  fontFamily: 'var(--mono)',
-                  fontSize: '0.75rem',
-                  letterSpacing: '0.15em',
-                  padding: '0.6rem 1.2rem',
-                  border: '2px solid var(--accent)',
-                  background: 'rgba(255,113,206,0.1)',
-                  boxShadow: '0 0 20px rgba(255,113,206,0.3)',
-                  textTransform: 'uppercase',
-                  animationDelay: `${i * 0.2}s`,
-                }}
-              >
-                {tag}
-              </span>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Asymmetric masonry grid projects */}
-      <section style={{ padding: '4rem 2rem', background: 'var(--black)' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          style={{
-            textAlign: 'center',
-            marginBottom: '4rem',
-          }}
-        >
-          <h2 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+        {/* Content overlay */}
+        <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', padding: '2rem' }}>
+          {/* Chrome title */}
+          <h1 style={{
+            fontSize: 'clamp(4rem, 14vw, 11rem)',
             fontWeight: 900,
+            lineHeight: 0.85,
+            letterSpacing: '-0.03em',
             textTransform: 'uppercase',
-            background: 'linear-gradient(135deg, var(--accent), var(--accent3))',
+            background: 'linear-gradient(180deg, #ffffff 0%, #ff71ce 40%, #b967ff 70%, #01cdfe 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
-            marginBottom: '1rem',
+            filter: 'drop-shadow(0 0 30px rgba(255,113,206,0.8))',
+            marginBottom: '0.5rem',
           }}>
-            featured work
-          </h2>
-          <p style={{ color: 'var(--dim)', fontSize: '0.9rem' }}>
-            selected projects / experiments
-          </p>
-        </motion.div>
+            LSCYTHE
+          </h1>
 
-        <div className="vaporwave-grid">
-          {featured.map((project, i) => (
-            <motion.div
-              key={project.slug}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              whileHover={{ y: -8, scale: 1.02 }}
-            >
-              <Link
-                href={`/projects/${project.slug}`}
-                style={{
-                  display: 'block',
-                  padding: '2.5rem',
-                  background: 'linear-gradient(135deg, rgba(255,113,206,0.1), rgba(185,103,255,0.1))',
-                  border: '1px solid var(--border)',
-                  boxShadow: '0 8px 32px rgba(255,113,206,0.2)',
-                  transition: 'all 0.3s',
-                }}
-              >
-                <h3 style={{
-                  fontSize: '1.5rem',
-                  fontWeight: 700,
+          {/* Subtitle */}
+          <p style={{
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: 'clamp(0.75rem, 1.5vw, 1rem)',
+            letterSpacing: '0.3em',
+            textTransform: 'uppercase',
+            color: '#01cdfe',
+            textShadow: '0 0 20px #01cdfe',
+            marginBottom: '3rem',
+          }}>
+            android engineer // jakarta // est. 2019
+          </p>
+
+          {/* Neon chips */}
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '3rem' }}>
+            {[
+              { label: 'android', color: '#ff71ce' },
+              { label: 'kmp', color: '#b967ff' },
+              { label: 'available', color: '#01cdfe' },
+            ].map(({ label, color }) => (
+              <span key={label} style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: '0.72rem',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                padding: '0.5rem 1.2rem',
+                border: `1px solid ${color}`,
+                color,
+                boxShadow: `0 0 12px ${color}66, inset 0 0 12px ${color}22`,
+                background: `${color}11`,
+              }}>
+                {label}
+              </span>
+            ))}
+          </div>
+
+          <Link href="/projects" style={{
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: '0.8rem',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            padding: '0.8rem 2rem',
+            background: 'linear-gradient(90deg, #ff71ce, #b967ff)',
+            color: '#fff',
+            boxShadow: '0 0 30px rgba(255,113,206,0.5)',
+            display: 'inline-block',
+          }}>
+            view work →
+          </Link>
+        </div>
+
+        {/* Scroll hint */}
+        <div style={{
+          position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)',
+          fontFamily: '"JetBrains Mono", monospace', fontSize: '0.6rem', letterSpacing: '0.2em',
+          color: 'rgba(185,103,255,0.6)', textTransform: 'uppercase', zIndex: 2,
+          animation: 'vw-pulse 2s ease-in-out infinite',
+        }}>
+          scroll ↓
+        </div>
+      </section>
+
+      {/* Projects section */}
+      <section style={{ padding: '6rem 2rem', position: 'relative' }}>
+        {/* Section bg */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(180deg, #0d0015 0%, #160a2a 50%, #0d0015 100%)',
+        }} />
+
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <p style={{
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: '0.65rem', letterSpacing: '0.3em', color: '#b967ff',
+              textTransform: 'uppercase', marginBottom: '1rem',
+            }}>
+              &gt;&gt; selected_work
+            </p>
+            <h2 style={{
+              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+              fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.03em',
+              background: 'linear-gradient(135deg, #ff71ce, #b967ff, #01cdfe)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              filter: 'drop-shadow(0 0 20px rgba(185,103,255,0.5))',
+            }}>
+              featured work
+            </h2>
+          </div>
+
+          {/* Asymmetric grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '1.5rem',
+          }}>
+            {featured.map((project, i) => (
+              <Link key={project.slug} href={`/projects/${project.slug}`} style={{
+                display: 'block',
+                padding: '2rem',
+                background: i % 2 === 0
+                  ? 'linear-gradient(135deg, rgba(255,113,206,0.08), rgba(185,103,255,0.08))'
+                  : 'linear-gradient(135deg, rgba(1,205,254,0.08), rgba(185,103,255,0.08))',
+                border: `1px solid ${i % 2 === 0 ? 'rgba(255,113,206,0.3)' : 'rgba(1,205,254,0.3)'}`,
+                boxShadow: i % 2 === 0
+                  ? '0 4px 24px rgba(255,113,206,0.15)'
+                  : '0 4px 24px rgba(1,205,254,0.15)',
+                gridRow: i === 0 ? 'span 1' : 'auto',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+              }}>
+                <div style={{
+                  fontFamily: '"JetBrains Mono", monospace',
+                  fontSize: '0.6rem', letterSpacing: '0.2em',
+                  color: i % 2 === 0 ? '#ff71ce' : '#01cdfe',
                   marginBottom: '1rem',
-                  color: 'var(--accent)',
-                  textTransform: 'uppercase',
                 }}>
-                  <GlitchText text={project.title} />
+                  {String(i + 1).padStart(2, '0')} / project
+                </div>
+                <h3 style={{
+                  fontSize: '1.3rem', fontWeight: 700, textTransform: 'uppercase',
+                  letterSpacing: '-0.01em', marginBottom: '0.75rem',
+                  color: i % 2 === 0 ? '#ff71ce' : '#01cdfe',
+                  textShadow: i % 2 === 0 ? '0 0 20px rgba(255,113,206,0.5)' : '0 0 20px rgba(1,205,254,0.5)',
+                }}>
+                  {project.title}
                 </h3>
-                <p style={{
-                  color: 'var(--dim)',
-                  lineHeight: 1.6,
-                  marginBottom: '1.5rem',
-                  fontSize: '0.9rem',
-                }}>
+                <p style={{ fontSize: '0.83rem', color: '#9b89b8', lineHeight: 1.6, marginBottom: '1rem' }}>
                   {project.description}
                 </p>
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                   {project.tags.slice(0, 3).map(t => (
-                    <span
-                      key={t}
-                      style={{
-                        fontFamily: 'var(--mono)',
-                        fontSize: '0.65rem',
-                        letterSpacing: '0.1em',
-                        padding: '0.3rem 0.6rem',
-                        border: '1px solid var(--accent2)',
-                        color: 'var(--accent2)',
-                        textTransform: 'lowercase',
-                      }}
-                    >
-                      {t}
-                    </span>
+                    <span key={t} style={{
+                      fontFamily: '"JetBrains Mono", monospace', fontSize: '0.58rem',
+                      letterSpacing: '0.1em', padding: '0.2rem 0.5rem',
+                      border: '1px solid rgba(185,103,255,0.4)', color: '#b967ff',
+                    }}>{t}</span>
                   ))}
                 </div>
               </Link>
-            </motion.div>
-          ))}
+            ))}
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: featured.length * 0.1 }}
-            whileHover={{ y: -8 }}
-          >
-            <Link
-              href="/projects"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2.5rem',
-                border: '2px dashed var(--border)',
-                background: 'rgba(255,113,206,0.05)',
-                fontSize: '1.2rem',
-                fontWeight: 700,
-                color: 'var(--accent)',
-                textTransform: 'uppercase',
-                minHeight: '200px',
-              }}
-            >
-              view all →
+            <Link href="/projects" style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: '2rem', minHeight: '160px',
+              border: '1px dashed rgba(185,103,255,0.3)',
+              background: 'rgba(185,103,255,0.04)',
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: '0.8rem', letterSpacing: '0.15em',
+              color: '#b967ff', textTransform: 'uppercase',
+            }}>
+              all projects →
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer style={{
-        padding: '2rem',
-        borderTop: '2px solid var(--border)',
-        textAlign: 'center',
-        background: 'var(--surface)',
+        borderTop: '1px solid rgba(185,103,255,0.2)',
+        padding: '2rem', textAlign: 'center',
+        background: '#0d0015',
+        fontFamily: '"JetBrains Mono", monospace',
+        fontSize: '0.62rem', letterSpacing: '0.15em',
+        color: 'rgba(185,103,255,0.4)',
       }}>
-        <div style={{
-          fontFamily: 'var(--mono)',
-          fontSize: '0.7rem',
-          letterSpacing: '0.15em',
-          color: 'var(--dim)',
-        }}>
-          <span style={{ color: 'var(--accent)' }}>lscythe.dev</span> © {new Date().getFullYear()}
-        </div>
+        <span style={{ color: '#ff71ce' }}>lscythe.dev</span> © {new Date().getFullYear()}
       </footer>
-    </>
+
+      <style>{`
+        @keyframes vw-pulse {
+          0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+          50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+        }
+      `}</style>
+    </div>
   )
 }
