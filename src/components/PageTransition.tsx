@@ -30,18 +30,12 @@ export default function PageTransition({ children }: { children: React.ReactNode
       return () => cancelAnimationFrame(raf)
 
     } else if (theme === 'retro') {
-      // quick fade only -- old browser feel
+      // retro: no animation, instant render
       el.style.transition = 'none'
-      el.style.opacity = '0'
+      el.style.opacity = '1'
       el.style.transform = 'none'
       el.style.filter = 'none'
-      const raf = requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          el.style.transition = 'opacity 0.18s linear'
-          el.style.opacity = '1'
-        })
-      })
-      return () => cancelAnimationFrame(raf)
+      el.style.clipPath = 'none'
 
     } else {
       // terminal: scan-line wipe down

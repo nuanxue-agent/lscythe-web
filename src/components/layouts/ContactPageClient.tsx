@@ -78,8 +78,12 @@ function ContactVaporwave() {
           <p style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.72rem', color: '#9b89b8', lineHeight: 1.7, marginBottom: '2rem' }}>
             open to senior android / kmp roles and interesting side projects.
           </p>
-          <div style={{ position: 'relative', height: '200px', border: '1px solid rgba(185,103,255,0.3)', overflow: 'hidden' }}>
-            <ArticleSceneWrapper slug="contact-rings" sceneOverride="rings" />
+          {/* Decorative grid lines instead of 3D */}
+          <div style={{ position: 'relative', height: '120px', overflow: 'hidden', opacity: 0.4 }}>
+            <div style={{
+              position: 'absolute', inset: 0,
+              backgroundImage: 'repeating-linear-gradient(90deg, rgba(185,103,255,0.3) 0px, rgba(185,103,255,0.3) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(0deg, rgba(185,103,255,0.3) 0px, rgba(185,103,255,0.3) 1px, transparent 1px, transparent 40px)',
+            }} />
           </div>
         </div>
 
