@@ -1067,7 +1067,232 @@ a:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
   animation: scan-line 2.5s ease-in-out infinite;
 }
 @keyframes scan-line {
-  0%   { top: 0;    opacity: 1; }
+  0% { top: 0; opacity: 1; }
   100% { top: 100%; opacity: 0; }
+}
+
+/* ── Vaporwave theme ── */
+[data-theme="vaporwave"] {
+  --black:   #0d0015;
+  --white:   #f0e6ff;
+  --dim:     #9b89b8;
+  --accent:  #ff71ce;
+  --accent2: #01cdfe;
+  --accent3: #b967ff;
+  --border:  #2d1b4e;
+  --surface: #160a2a;
+}
+
+[data-theme="vaporwave"] body {
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(185,103,255,0.05) 40px, rgba(185,103,255,0.05) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(185,103,255,0.05) 40px, rgba(185,103,255,0.05) 41px);
+}
+
+[data-theme="vaporwave"] .hero__title,
+[data-theme="vaporwave"] h1,
+[data-theme="vaporwave"] h2 {
+  background: linear-gradient(135deg, #ff71ce, #b967ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="vaporwave"] .nav__logo {
+  color: #ff71ce;
+}
+
+[data-theme="vaporwave"] .glow {
+  text-shadow: 0 0 10px rgba(255,113,206,0.7), 0 0 20px rgba(255,113,206,0.4);
+}
+
+[data-theme="vaporwave"] .glow2 {
+  text-shadow: 0 0 10px rgba(185,103,255,0.7), 0 0 20px rgba(185,103,255,0.4);
+}
+
+/* ── Retro theme ── */
+[data-theme="retro"] {
+  --black:   #ffffff;
+  --white:   #000000;
+  --dim:     #444444;
+  --accent:  #0000ee;
+  --accent2: #cc0000;
+  --accent3: #006600;
+  --border:  #999999;
+  --surface: #f0f0f0;
+}
+
+[data-theme="retro"] body {
+  background: #ffffff;
+  font-family: "Times New Roman", Times, Georgia, serif;
+}
+
+[data-theme="retro"] h1,
+[data-theme="retro"] h2,
+[data-theme="retro"] h3 {
+  font-family: "Times New Roman", Times, Georgia, serif;
+  -webkit-text-fill-color: initial;
+  background: none;
+}
+
+[data-theme="retro"] .nav {
+  border-bottom: 2px solid #000000;
+  background: #c0c0c0;
+}
+
+[data-theme="retro"] a {
+  color: #0000ee;
+  text-decoration: underline;
+}
+
+[data-theme="retro"] .nav__logo {
+  color: #0000ee;
+}
+
+[data-theme="retro"] .nav__links a {
+  color: #0000ee;
+}
+
+[data-theme="retro"] .tag {
+  border: 1px solid #0000ee;
+  color: #0000ee;
+  background: none;
+}
+
+[data-theme="retro"] .article-content code,
+[data-theme="retro"] code {
+  background: #f0f0f0;
+  border: 1px solid #999999;
+  color: #000000;
+  font-family: "Courier New", monospace;
+}
+
+[data-theme="retro"] pre {
+  background: #f0f0f0;
+  border: 1px solid #999999;
+}
+
+[data-theme="retro"] .glow,
+[data-theme="retro"] .glow2 {
+  text-shadow: none;
+}
+
+[data-theme="retro"] .status-chip--green {
+  color: #006600;
+  border-color: #006600;
+  background: none;
+}
+
+[data-theme="retro"] .deco-bar span:nth-child(odd)  { background: #000000; }
+[data-theme="retro"] .deco-bar span:nth-child(even) { background: #999999; }
+
+/* Retro marquee-style announcement (CSS scroll animation) */
+[data-theme="retro"] .system-bar {
+  overflow: hidden;
+  white-space: nowrap;
+  background: #000080;
+  color: #ffffff;
+  border-bottom: 2px solid #000;
+}
+
+[data-theme="retro"] .system-bar::before {
+  content: "★ WELCOME TO LSCYTHE.DEV ★ ANDROID ENGINEER ★ JAKARTA, ID ★ AVAILABLE FOR WORK ★ ";
+  display: inline-block;
+  animation: retro-marquee 18s linear infinite;
+  padding-left: 100%;
+}
+
+[data-theme="retro"] .system-bar > * {
+  display: none;
+}
+
+@keyframes retro-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+/* ── Custom cursor ── */
+body.has-custom-cursor * { cursor: none !important; }
+.cursor-dot {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--white);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s;
+}
+.cursor-ring {
+  position: fixed;
+  width: 28px; height: 28px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.cursor-ring.is-hovering {
+  width: 48px; height: 48px;
+  background: rgba(0,255,136,0.08);
+}
+.cursor-ring.is-clicking {
+  width: 14px; height: 14px;
+}
+
+/* ── Magnetic wrapper ── */
+.magnetic-wrap {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.23,1,0.32,1);
+}
+
+/* ── Ripple ── */
+.ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+.ripple-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.25;
+  transform: scale(0);
+  animation: ripple-anim 0.5s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes ripple-anim {
+  to { transform: scale(4); opacity: 0; }
+}
+
+/* ── Typewriter cursor ── */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+/* ── Nav active indicator ── */
+.nav__links li a.active {
+  color: var(--accent);
+}
+.nav__links li a.active::after {
+  width: 100%;
+}
+
+/* ── Scroll progress bar ── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 1000;
+  transform-origin: left;
+  box-shadow: 0 0 8px var(--accent);
+  transition: none;
 }
 
