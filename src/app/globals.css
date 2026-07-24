@@ -1468,3 +1468,126 @@ body.has-custom-cursor * { cursor: none !important; }
   }
 }
 
+/* ── Hanzi / Chinese Ink theme ── */
+[data-theme="hanzi"] {
+  --black: #0f0c08;
+  --white: #e8e0d0;
+  --dim: rgba(232,224,208,0.5);
+  --accent: #c41e3a;
+  --accent2: #c8a84b;
+  --accent3: #8b0000;
+  --border: rgba(196,30,58,0.25);
+  --surface: #1a1510;
+}
+
+[data-theme="hanzi"] body {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.hanzi-deco {
+  font-family: "Noto Serif SC", "Source Han Serif", Georgia, serif;
+  color: rgba(196,30,58,0.08);
+  font-size: clamp(8rem, 20vw, 16rem);
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Hanzi nav responsive */
+@media (max-width: 640px) {
+  [data-theme="hanzi"] nav {
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem !important;
+  }
+  [data-theme="hanzi"] nav ul {
+    gap: 1.25rem !important;
+    flex-wrap: wrap;
+  }
+}
+
+/* ── Cyberpunk theme ── */
+[data-theme="cyber"] {
+  --black: #0a0a0f;
+  --white: #e0e0e5;
+  --dim: rgba(224,224,229,0.6);
+  --accent: #ff003c;
+  --accent2: #f7e500;
+  --accent3: #00d9ff;
+  --border: rgba(255,0,60,0.4);
+  --surface: #1a1a22;
+}
+[data-theme="cyber"] body {
+  font-family: "Inter", -apple-system, sans-serif;
+  background: #0a0a0f;
+}
+.cyber-scanlines {
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,0,60,0.03) 2px,
+    rgba(255,0,60,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+.cyber-rain {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    110deg,
+    transparent,
+    transparent 2px,
+    rgba(0,217,255,0.05) 2px,
+    rgba(0,217,255,0.05) 3px
+  );
+  animation: cyber-rain-anim 1.5s linear infinite;
+  pointer-events: none;
+}
+@keyframes cyber-rain-anim {
+  from { background-position: 0 0; }
+  to { background-position: 50px 100px; }
+}
+.cyber-glow-red {
+  text-shadow: 0 0 10px #ff003c, 0 0 20px #ff003c, 0 0 40px rgba(255,0,60,0.5);
+}
+.cyber-glow-yellow {
+  text-shadow: 0 0 10px #f7e500, 0 0 20px #f7e500;
+}
+.cyber-glitch {
+  position: relative;
+}
+.cyber-glitch::before,
+.cyber-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0.8;
+}
+.cyber-glitch::before {
+  animation: cyber-glitch-1 0.4s infinite;
+  color: #00d9ff;
+  z-index: -1;
+}
+.cyber-glitch::after {
+  animation: cyber-glitch-2 0.4s infinite;
+  color: #ff003c;
+  z-index: -2;
+}
+@keyframes cyber-glitch-1 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 2px); }
+  50% { transform: translate(2px, -2px); }
+  75% { transform: translate(-2px, -2px); }
+}
+@keyframes cyber-glitch-2 {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(2px, -2px); }
+  50% { transform: translate(-2px, 2px); }
+  75% { transform: translate(2px, 2px); }
+}
+

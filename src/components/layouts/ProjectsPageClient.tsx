@@ -4,6 +4,8 @@ import { useTheme } from '@/components/ThemeProvider'
 import ProjectsTerminal from '@/components/layouts/ProjectsTerminal'
 import ProjectsVaporwave from '@/components/layouts/ProjectsVaporwave'
 import ProjectsRetro from '@/components/layouts/ProjectsRetro'
+import ProjectsCyber from '@/components/layouts/ProjectsCyber'
+import ProjectsHanzi from '@/components/layouts/ProjectsHanzi'
 import type { Project } from '@/lib/content'
 
 interface ProjectsPageClientProps {
@@ -16,5 +18,7 @@ export default function ProjectsPageClient({ projects }: ProjectsPageClientProps
 
   if (theme === 'vaporwave') return <ProjectsVaporwave projects={projects} />
   if (theme === 'retro') return <ProjectsRetro projects={projects} />
+  if (theme === 'cyber') return <ProjectsCyber projects={projects} />
+  if (theme === 'hanzi') return <ProjectsHanzi projects={projects} />
   return <ProjectsTerminal projects={projects} />
 }

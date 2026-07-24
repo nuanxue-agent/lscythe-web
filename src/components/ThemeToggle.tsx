@@ -6,6 +6,8 @@ const THEMES = [
   { id: 'terminal', label: 'TERM' },
   { id: 'vaporwave', label: 'WAVE' },
   { id: 'retro', label: 'RETRO' },
+  { id: 'cyber', label: 'CYBER' },
+  { id: 'hanzi', label: '汉字' },
 ] as const
 
 export default function ThemeToggle() {

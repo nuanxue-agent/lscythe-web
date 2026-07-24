@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react'
 
-type Theme = 'terminal' | 'vaporwave' | 'retro'
+type Theme = 'terminal' | 'vaporwave' | 'retro' | 'hanzi' | 'cyber'
 
 interface ThemeContextValue {
   theme: Theme
@@ -23,7 +23,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem('lscythe-theme') as Theme | null
     const initial: Theme =
-      stored === 'vaporwave' || stored === 'retro' ? stored : 'terminal'
+      stored === 'vaporwave' || stored === 'retro' || stored === 'hanzi' || stored === 'cyber' ? stored : 'terminal'
     setThemeState(initial)
     document.documentElement.setAttribute('data-theme', initial)
     setMounted(true)
