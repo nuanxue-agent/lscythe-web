@@ -7,6 +7,7 @@ import PageTransition from '@/components/PageTransition'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import ThemeToggle from '@/components/ThemeToggle'
 import ThemeAwareNav from '@/components/ThemeAwareNav'
+import SiteWrapper from '@/components/SiteWrapper'
 
 export const metadata: Metadata = {
   title: { default: 'lscythe', template: '%s -- lscythe' },
@@ -24,12 +25,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <NoiseOverlay />
           <MouseSpotlight />
-          <div className="site-wrapper">
+          <SiteWrapper>
             <ThemeAwareNav />
             <main>
               <PageTransition>{children}</PageTransition>
             </main>
-          </div>
+          </SiteWrapper>
           <Terminal />
           <ThemeToggle />
         </ThemeProvider>

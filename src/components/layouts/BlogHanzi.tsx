@@ -7,15 +7,19 @@ interface BlogHanziProps {
   posts: Post[]
 }
 
-const DECO_CHARS = ['道', '德', '力', '武', '技', '工', '文', '心', '志', '气', '道', '明']
+const DECO_CHARS = ['道', '德', '力', '武', '技', '工', '文', '心', '志', '气', '明', '義']
 
-function formatDate(dateStr: string): { day: string; month: string; year: string } {
-  if (!dateStr) return { day: '—', month: '—', year: '—' }
+function formatChineseDate(dateStr: string): { yearHanzi: string; monthNum: string; dayNum: string; raw: string } {
+  if (!dateStr) return { yearHanzi: '—', monthNum: '—', dayNum: '—', raw: '' }
   const d = new Date(dateStr)
+  const year = d.getUTCFullYear()
+  const month = d.getUTCMonth() + 1
+  const day = d.getUTCDate()
   return {
-    day: String(d.getUTCDate()).padStart(2, '0'),
-    month: d.toLocaleString('en', { month: 'short', timeZone: 'UTC' }).toUpperCase(),
-    year: String(d.getUTCFullYear()),
+    yearHanzi: `${year}年`,
+    monthNum: `${month}月`,
+    dayNum: `${day}日`,
+    raw: dateStr,
   }
 }
 
@@ -28,122 +32,144 @@ export default function BlogHanzi({ posts }: BlogHanziProps) {
       fontFamily: 'Georgia, "Times New Roman", serif',
     }}>
       {/* Header */}
-      <div style={{ padding: '4rem 4rem 2rem' }}>
+      <div style={{ padding: '6rem 6rem 3rem', position: 'relative', overflow: 'hidden' }}>
+        {/* Ghost hanzi behind header */}
+        <div style={{
+          position: 'absolute',
+          right: '-1rem',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+          fontSize: 'clamp(8rem, 16vw, 14rem)',
+          fontWeight: 900,
+          color: 'rgba(196,30,58,0.07)',
+          lineHeight: 1,
+          userSelect: 'none',
+          pointerEvents: 'none',
+        }}>文</div>
+
         <div style={{
           fontFamily: '"JetBrains Mono", monospace',
           fontSize: '0.62rem',
           color: 'rgba(232,224,208,0.3)',
-          letterSpacing: '0.25em',
+          letterSpacing: '0.3em',
           textTransform: 'uppercase',
-          marginBottom: '1rem',
-        }}>scroll</div>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem' }}>
+          marginBottom: '1.25rem',
+        }}>典籍 · scroll / journal</div>
+
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem' }}>
           <h1 style={{
             fontFamily: 'Georgia, "Times New Roman", serif',
-            fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: 400,
-            letterSpacing: '0.15em',
+            letterSpacing: '0.2em',
             color: '#e8e0d0',
           }}>writing</h1>
           <span style={{
             fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-            fontSize: '1.4rem',
+            fontSize: '1.6rem',
             color: 'rgba(196,30,58,0.5)',
           }}>文章</span>
         </div>
+
+        {/* Red rule */}
         <div style={{
-          marginTop: '1rem',
-          width: '3rem',
-          height: '1px',
-          background: '#c41e3a',
+          marginTop: '1.5rem',
+          width: '100%',
+          height: '2px',
+          background: 'rgba(196,30,58,0.25)',
         }} />
       </div>
 
-      {/* Posts */}
-      <div style={{ padding: '1rem 4rem 6rem' }}>
+      {/* Posts as scroll/journal entries */}
+      <div style={{ padding: '0 6rem 8rem' }}>
         {posts.map((post, i) => {
-          const { day, month, year } = formatDate(post.date)
+          const { yearHanzi, monthNum, dayNum } = formatChineseDate(post.date)
           const deco = DECO_CHARS[i % DECO_CHARS.length]
 
           return (
             <div key={post.slug} style={{ position: 'relative' }}>
-              {/* Large decorative character per post */}
-              <span style={{
+              {/* Large decorative character per entry */}
+              <div style={{
                 position: 'absolute',
-                right: '0',
+                right: '-1rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-                fontSize: 'clamp(4rem, 8vw, 7rem)',
+                fontSize: 'clamp(5rem, 10vw, 8rem)',
                 fontWeight: 900,
-                color: 'rgba(196,30,58,0.04)',
+                color: 'rgba(196,30,58,0.05)',
                 lineHeight: 1,
                 userSelect: 'none',
                 pointerEvents: 'none',
-              }}>{deco}</span>
+              }}>{deco}</div>
 
               <Link
                 href={`/blog/${post.slug}`}
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: '5rem 1fr',
-                  gap: '2.5rem',
-                  padding: '2.25rem 0',
+                  gridTemplateColumns: '7rem 1fr',
+                  gap: '3rem',
+                  padding: '3rem 0',
                   textDecoration: 'none',
                   position: 'relative',
                   zIndex: 1,
                 }}
               >
-                {/* Date column */}
+                {/* Date column — Chinese date format */}
                 <div style={{
                   textAlign: 'right',
                   borderRight: '1px solid rgba(196,30,58,0.2)',
-                  paddingRight: '1.5rem',
+                  paddingRight: '2rem',
+                  paddingTop: '0.2rem',
                 }}>
                   <div style={{
-                    fontFamily: '"JetBrains Mono", monospace',
-                    fontSize: '1.1rem',
-                    color: 'rgba(196,30,58,0.6)',
-                    lineHeight: 1,
-                    marginBottom: '0.2rem',
-                  }}>{day}</div>
-                  <div style={{
-                    fontFamily: '"JetBrains Mono", monospace',
-                    fontSize: '0.55rem',
-                    color: 'rgba(232,224,208,0.3)',
-                    letterSpacing: '0.1em',
-                  }}>{month}</div>
-                  <div style={{
-                    fontFamily: '"JetBrains Mono", monospace',
-                    fontSize: '0.55rem',
-                    color: 'rgba(232,224,208,0.2)',
+                    fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+                    fontSize: '0.85rem',
+                    color: 'rgba(196,30,58,0.7)',
+                    lineHeight: 1.6,
                     letterSpacing: '0.05em',
-                    marginTop: '0.15rem',
-                  }}>{year}</div>
+                  }}>
+                    <div>{yearHanzi}</div>
+                    <div>{monthNum}</div>
+                    <div style={{ fontSize: '1.1rem', fontWeight: 700 }}>{dayNum}</div>
+                  </div>
                 </div>
 
                 {/* Content column */}
                 <div style={{ paddingRight: '8rem' }}>
+                  {/* Entry label */}
+                  <div style={{
+                    fontFamily: '"JetBrains Mono", monospace',
+                    fontSize: '0.58rem',
+                    color: 'rgba(196,30,58,0.35)',
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    marginBottom: '0.75rem',
+                  }}>
+                    手記 · entry {String(i + 1).padStart(2, '0')}
+                  </div>
+
                   <div style={{
                     fontFamily: 'Georgia, "Times New Roman", serif',
-                    fontSize: '1.05rem',
+                    fontSize: 'clamp(1.05rem, 2.5vw, 1.3rem)',
                     fontWeight: 400,
                     color: '#e8e0d0',
-                    letterSpacing: '0.04em',
-                    marginBottom: '0.5rem',
+                    letterSpacing: '0.05em',
+                    marginBottom: '0.75rem',
                     lineHeight: 1.3,
                   }}>{post.title}</div>
 
                   <div style={{
                     fontFamily: '"JetBrains Mono", monospace',
-                    fontSize: '0.65rem',
+                    fontSize: '0.68rem',
                     color: 'rgba(232,224,208,0.4)',
-                    lineHeight: 1.7,
-                    marginBottom: '0.75rem',
-                    maxWidth: '480px',
+                    lineHeight: 1.8,
+                    marginBottom: '1rem',
+                    maxWidth: '520px',
                   }}>{post.description}</div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
                     <span style={{
                       fontFamily: '"JetBrains Mono", monospace',
                       fontSize: '0.55rem',
@@ -151,13 +177,13 @@ export default function BlogHanzi({ posts }: BlogHanziProps) {
                       letterSpacing: '0.1em',
                     }}>{post.readingTime}</span>
 
-                    {post.tags.slice(0, 2).map(tag => (
+                    {post.tags.slice(0, 3).map(tag => (
                       <span key={tag} style={{
                         fontFamily: '"JetBrains Mono", monospace',
-                        fontSize: '0.5rem',
+                        fontSize: '0.52rem',
                         color: 'rgba(232,224,208,0.25)',
                         border: '1px solid rgba(196,30,58,0.15)',
-                        padding: '0.1rem 0.35rem',
+                        padding: '0.1rem 0.4rem',
                         letterSpacing: '0.06em',
                       }}>{tag}</span>
                     ))}
@@ -165,8 +191,9 @@ export default function BlogHanzi({ posts }: BlogHanziProps) {
                 </div>
               </Link>
 
-              {/* Divider */}
+              {/* Full-width divider */}
               <div style={{
+                width: '100%',
                 height: '1px',
                 background: 'rgba(196,30,58,0.1)',
               }} />
@@ -176,33 +203,59 @@ export default function BlogHanzi({ posts }: BlogHanziProps) {
 
         {posts.length === 0 && (
           <div style={{
-            padding: '4rem 0',
+            padding: '5rem 0',
             fontFamily: '"JetBrains Mono", monospace',
             fontSize: '0.7rem',
             color: 'rgba(232,224,208,0.25)',
             letterSpacing: '0.1em',
-          }}>no posts yet.</div>
+            textAlign: 'center',
+          }}>
+            <div style={{
+              fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+              fontSize: '3rem',
+              color: 'rgba(196,30,58,0.1)',
+              marginBottom: '1rem',
+            }}>空</div>
+            no entries yet.
+          </div>
         )}
       </div>
 
       {/* Footer */}
       <footer style={{
-        padding: '1.5rem 4rem',
+        padding: '2rem 6rem',
         borderTop: '1px solid rgba(196,30,58,0.15)',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        fontFamily: '"JetBrains Mono", monospace',
-        fontSize: '0.6rem',
-        letterSpacing: '0.12em',
-        color: 'rgba(232,224,208,0.2)',
+        gap: '1.5rem',
       }}>
-        <span>lscythe.dev / writing</span>
-        <span style={{
+        <div style={{
           fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-          color: 'rgba(196,30,58,0.15)',
-        }}>文</span>
-        <span>{new Date().getFullYear()}</span>
+          fontSize: '1.1rem',
+          color: 'rgba(196,30,58,0.2)',
+          letterSpacing: '1.5rem',
+          paddingLeft: '1.5rem',
+        }}>
+          道 德 力 武 技 工
+        </div>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+          fontFamily: '"JetBrains Mono", monospace',
+          fontSize: '0.6rem',
+          letterSpacing: '0.12em',
+          color: 'rgba(232,224,208,0.2)',
+        }}>
+          <span>lscythe.dev / writing</span>
+          <span style={{
+            fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+            color: 'rgba(196,30,58,0.15)',
+          }}>文</span>
+          <span>{new Date().getFullYear()}</span>
+        </div>
       </footer>
     </div>
   )
