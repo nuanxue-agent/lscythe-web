@@ -1211,6 +1211,111 @@ a:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
   to   { transform: translateX(-100%); }
 }
 
+/* ── Vaporwave layout utilities ── */
+
+/* Masonry-style asymmetric grid — odd items span 2 cols on wide screens */
+.vaporwave-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+@media (min-width: 900px) {
+  .vaporwave-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  /* every 5th card gets a double-wide slot for asymmetry */
+  .vaporwave-grid > *:nth-child(5n + 1) {
+    grid-column: span 2;
+  }
+}
+@media (max-width: 700px) {
+  .vaporwave-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Subtle floating animation for vaporwave elements */
+.vaporwave-float {
+  animation: vaporwave-float 3s ease-in-out infinite;
+}
+@keyframes vaporwave-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Stagger delays for multiple floaters */
+.vaporwave-float:nth-child(2) { animation-delay: 0.4s; }
+.vaporwave-float:nth-child(3) { animation-delay: 0.8s; }
+.vaporwave-float:nth-child(4) { animation-delay: 1.2s; }
+
+/* ── Retro layout utilities ── */
+
+/* 180px sticky sidebar */
+.retro-sidebar {
+  width: 180px;
+  min-width: 180px;
+  position: sticky;
+  top: 60px;
+  align-self: flex-start;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+/* 680px centered reading column */
+.retro-column {
+  max-width: 680px;
+}
+
+/* Simple blog-style list — no bullets, divider lines, tight spacing */
+.retro-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.retro-list li {
+  padding-bottom: 1.5rem;
+}
+
+/* Retro theme: force serif body in the layout areas */
+[data-theme="retro"] .retro-column,
+[data-theme="retro"] .retro-sidebar {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+[data-theme="retro"] .retro-column h1,
+[data-theme="retro"] .retro-column h2,
+[data-theme="retro"] .retro-column h3,
+[data-theme="retro"] .retro-sidebar h2,
+[data-theme="retro"] .retro-sidebar h3 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+[data-theme="retro"] .retro-column a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Retro layout: outer shell */
+[data-theme="retro"] .retro-layout-shell {
+  background: var(--black);
+  display: flex;
+  max-width: 960px;
+  margin: 0 auto;
+  min-height: calc(100vh - 100px);
+}
+
+/* Vaporwave: glow on card hover via parent */
+[data-theme="vaporwave"] .vaporwave-grid > * a:hover {
+  box-shadow: 0 12px 48px rgba(255,113,206,0.35), 0 0 80px rgba(185,103,255,0.15);
+}
+
+/* Reduce float animation if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .vaporwave-float {
+    animation: none;
+  }
+}
+
 /* ── Custom cursor ── */
 body.has-custom-cursor * { cursor: none !important; }
 .cursor-dot {
