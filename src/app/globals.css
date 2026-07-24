@@ -1075,7 +1075,7 @@ a:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 [data-theme="vaporwave"] {
   --black:   #0d0015;
   --white:   #f0e6ff;
-  --dim:     #9b89b8;
+  --dim:     #b89dd9;
   --accent:  #ff71ce;
   --accent2: #01cdfe;
   --accent3: #b967ff;
@@ -1103,11 +1103,28 @@ a:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
 }
 
 [data-theme="vaporwave"] .glow {
-  text-shadow: 0 0 10px rgba(255,113,206,0.7), 0 0 20px rgba(255,113,206,0.4);
+  text-shadow: 0 0 8px rgba(255,113,206,0.5), 0 0 16px rgba(255,113,206,0.25);
 }
 
 [data-theme="vaporwave"] .glow2 {
-  text-shadow: 0 0 10px rgba(185,103,255,0.7), 0 0 20px rgba(185,103,255,0.4);
+  text-shadow: 0 0 8px rgba(185,103,255,0.5), 0 0 16px rgba(185,103,255,0.25);
+}
+
+/* Vaporwave link contrast improvement for WCAG AA */
+[data-theme="vaporwave"] a {
+  color: #01cdfe;
+}
+
+[data-theme="vaporwave"] .article-content a {
+  color: #01cdfe;
+}
+
+[data-theme="vaporwave"] .nav__links a {
+  color: #b89dd9;
+}
+
+[data-theme="vaporwave"] .nav__links a:hover {
+  color: #ff71ce;
 }
 
 /* ── Retro theme ── */
@@ -1399,5 +1416,55 @@ body.has-custom-cursor * { cursor: none !important; }
   transform-origin: left;
   box-shadow: 0 0 8px var(--accent);
   transition: none;
+}
+
+/* ── Theme toggle mobile positioning ── */
+@media (max-width: 700px) {
+  .theme-toggle-container {
+    top: 1rem !important;
+    right: 1rem !important;
+    left: auto !important;
+    bottom: auto !important;
+    flex-direction: row;
+    gap: 0.2rem !important;
+  }
+  .theme-toggle-container button {
+    font-size: 0.55rem !important;
+    padding: 0.25rem 0.35rem !important;
+    min-height: 32px;
+  }
+}
+
+/* ── Vaporwave float animation for chips ── */
+@keyframes vw-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.vaporwave-chip {
+  animation: vw-float 3s ease-in-out infinite;
+}
+
+/* ── Retro sidebar mobile: stack vertically ── */
+@media (max-width: 700px) {
+  .retro-sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+    position: static !important;
+    max-height: none !important;
+  }
+  .retro-layout-shell {
+    flex-direction: column !important;
+  }
+  .retro-layout-shell aside {
+    width: 100% !important;
+    min-width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid #cccccc;
+  }
+  .retro-layout-shell main {
+    padding: 1.25rem 1rem !important;
+  }
 }
 

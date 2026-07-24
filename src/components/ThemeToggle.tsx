@@ -13,6 +13,7 @@ export default function ThemeToggle() {
 
   return (
     <div
+      className="theme-toggle-container"
       style={{
         position: 'fixed',
         bottom: '1.5rem',

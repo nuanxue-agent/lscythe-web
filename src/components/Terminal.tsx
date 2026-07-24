@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useTheme } from './ThemeProvider'
 
 const COMMANDS: Record<string, string[]> = {
   help: [
@@ -67,6 +68,7 @@ const COMMANDS: Record<string, string[]> = {
 const UNKNOWN = (cmd: string) => [`> unknown command: "${cmd}"`, '  type "help" for available commands']
 
 export default function Terminal() {
+  const { theme } = useTheme()
   const [open, setOpen] = useState(false)
   const [lines, setLines] = useState<string[]>(['> terminal ready. type "help" to begin.'])
   const [input, setInput] = useState('')
@@ -75,45 +77,37 @@ export default function Terminal() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // open with ` key
+  // open with ` key — disabled on retro theme
   useEffect(() => {
+    if (theme === 'retro') return
     const onKey = (e: KeyboardEvent) => {
       if (e.key === '`') { e.preventDefault(); setOpen(o => !o) }
       if (e.key === 'Escape') setOpen(false)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [theme])
 
   useEffect(() => {
-    if (open) {
-      setTimeout(() => inputRef.current?.focus(), 50)
-    }
+    if (open) setTimeout(() => inputRef.current?.focus(), 50)
   }, [open])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [lines])
 
+  // Hide on retro — doesn't fit the 2004 blog aesthetic
+  if (theme === 'retro') return null
+
   const submit = () => {
     const cmd = input.trim().toLowerCase()
     if (!cmd) return
-
     setHistory(h => [cmd, ...h])
     setHistIdx(-1)
     setInput('')
-
     const response = COMMANDS[cmd] ?? UNKNOWN(cmd)
-
-    if (response[0] === '__CLEAR__') {
-      setLines(['> cleared.'])
-      return
-    }
-    if (response[0] === '__EXIT__') {
-      setOpen(false)
-      return
-    }
-
+    if (response[0] === '__CLEAR__') { setLines(['> cleared.']); return }
+    if (response[0] === '__EXIT__') { setOpen(false); return }
     setLines(l => [...l, `$ ${cmd}`, ...response, ''])
   }
 
@@ -163,24 +157,21 @@ export default function Terminal() {
   }
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        bottom: '1.5rem',
-        right: '1.5rem',
-        width: 'min(520px, 92vw)',
-        height: '340px',
-        background: 'rgba(8,8,8,0.97)',
-        border: '1px solid var(--accent)',
-        boxShadow: '0 0 40px rgba(0,255,136,0.15), 0 0 80px rgba(0,255,136,0.05)',
-        zIndex: 200,
-        display: 'flex',
-        flexDirection: 'column',
-        fontFamily: 'var(--mono)',
-        fontSize: '0.72rem',
-      }}
-    >
-      {/* title bar */}
+    <div style={{
+      position: 'fixed',
+      bottom: '1.5rem',
+      right: '1.5rem',
+      width: 'min(520px, 92vw)',
+      height: '340px',
+      background: 'rgba(8,8,8,0.97)',
+      border: '1px solid var(--accent)',
+      boxShadow: '0 0 40px rgba(0,255,136,0.15), 0 0 80px rgba(0,255,136,0.05)',
+      zIndex: 200,
+      display: 'flex',
+      flexDirection: 'column',
+      fontFamily: 'var(--mono)',
+      fontSize: '0.72rem',
+    }}>
       <div style={{
         borderBottom: '1px solid var(--border)',
         padding: '0.5rem 1rem',
@@ -200,14 +191,9 @@ export default function Terminal() {
         </button>
       </div>
 
-      {/* output */}
       <div style={{
-        flex: 1,
-        overflowY: 'auto',
-        padding: '0.75rem 1rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.15rem',
+        flex: 1, overflowY: 'auto', padding: '0.75rem 1rem',
+        display: 'flex', flexDirection: 'column', gap: '0.15rem',
       }}>
         {lines.map((line, i) => (
           <div key={i} style={{
@@ -221,7 +207,6 @@ export default function Terminal() {
         <div ref={bottomRef} />
       </div>
 
-      {/* input */}
       <div style={{
         borderTop: '1px solid var(--border)',
         padding: '0.5rem 1rem',

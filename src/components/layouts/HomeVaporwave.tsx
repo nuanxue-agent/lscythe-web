@@ -156,7 +156,7 @@ export default function HomeVaporwave({ featured }: Props) {
               { label: 'kmp', color: '#b967ff' },
               { label: 'available', color: '#01cdfe' },
             ].map(({ label, color }) => (
-              <span key={label} style={{
+              <span key={label} className="vaporwave-chip" style={{
                 fontFamily: '"JetBrains Mono", monospace',
                 fontSize: '0.72rem',
                 letterSpacing: '0.2em',
@@ -227,7 +227,7 @@ export default function HomeVaporwave({ featured }: Props) {
           </div>
 
           {/* Asymmetric grid */}
-          <div style={{
+          <div className="vaporwave-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
             gap: '1.5rem',
