@@ -26,7 +26,8 @@ export default function ProjectArticleSwitcher({
   repo,
   html,
 }: ProjectArticleSwitcherProps) {
-  const { theme } = useTheme()
+  const { theme, mounted } = useTheme()
+  if (!mounted) return null
 
   const kicker = (
     <>

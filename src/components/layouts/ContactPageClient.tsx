@@ -195,7 +195,8 @@ function ContactRetro() {
 }
 
 export default function ContactPageClient() {
-  const { theme } = useTheme()
+  const { theme, mounted } = useTheme()
+  if (!mounted) return null
   if (theme === 'vaporwave') return <ContactVaporwave />
   if (theme === 'retro') return <ContactRetro />
   return <ContactTerminal />

@@ -11,7 +11,8 @@ interface BlogPageClientProps {
 }
 
 export default function BlogPageClient({ posts }: BlogPageClientProps) {
-  const { theme } = useTheme()
+  const { theme, mounted } = useTheme()
+  if (!mounted) return null
 
   if (theme === 'vaporwave') return <BlogVaporwave posts={posts} />
   if (theme === 'retro') return <BlogRetro posts={posts} />

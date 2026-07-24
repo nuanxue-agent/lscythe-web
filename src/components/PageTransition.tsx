@@ -1,8 +1,8 @@
 'use client'
 
-import { useTheme } from './ThemeProvider'
-import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
+import { useTheme } from './ThemeProvider'
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -13,38 +13,57 @@ export default function PageTransition({ children }: { children: React.ReactNode
     const el = ref.current
     if (!el) return
 
-    el.style.opacity = '0'
-
     if (theme === 'vaporwave') {
-      // vaporwave: slide in from right with neon flash
-      el.style.transform = 'translateX(24px)'
-      el.style.filter = 'brightness(2)'
+      // slide from right + neon flash
+      el.style.transition = 'none'
+      el.style.opacity = '0'
+      el.style.transform = 'translateX(32px)'
+      el.style.filter = 'brightness(1.8) saturate(2)'
       const raf = requestAnimationFrame(() => {
-        el.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease'
-        el.style.opacity = '1'
-        el.style.transform = 'translateX(0)'
-        el.style.filter = 'brightness(1)'
+        requestAnimationFrame(() => {
+          el.style.transition = 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1), filter 0.5s ease'
+          el.style.opacity = '1'
+          el.style.transform = 'translateX(0)'
+          el.style.filter = 'brightness(1) saturate(1)'
+        })
       })
       return () => cancelAnimationFrame(raf)
+
     } else if (theme === 'retro') {
-      // retro: simple fade, no slide (old browsers didn't do smooth transitions)
+      // quick fade only -- old browser feel
+      el.style.transition = 'none'
+      el.style.opacity = '0'
       el.style.transform = 'none'
+      el.style.filter = 'none'
       const raf = requestAnimationFrame(() => {
-        el.style.transition = 'opacity 0.2s linear'
-        el.style.opacity = '1'
+        requestAnimationFrame(() => {
+          el.style.transition = 'opacity 0.18s linear'
+          el.style.opacity = '1'
+        })
       })
       return () => cancelAnimationFrame(raf)
+
     } else {
-      // terminal: slide up
-      el.style.transform = 'translateY(12px)'
+      // terminal: scan-line wipe down
+      el.style.transition = 'none'
+      el.style.opacity = '0'
+      el.style.transform = 'translateY(0)'
+      el.style.clipPath = 'inset(0 0 100% 0)'
+      el.style.filter = 'none'
       const raf = requestAnimationFrame(() => {
-        el.style.transition = 'opacity 0.35s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1)'
-        el.style.opacity = '1'
-        el.style.transform = 'translateY(0)'
+        requestAnimationFrame(() => {
+          el.style.transition = 'opacity 0.3s ease, clip-path 0.4s cubic-bezier(0.16,1,0.3,1)'
+          el.style.opacity = '1'
+          el.style.clipPath = 'inset(0 0 0% 0)'
+        })
       })
       return () => cancelAnimationFrame(raf)
     }
   }, [pathname, theme])
 
-  return <div ref={ref}>{children}</div>
+  return (
+    <div ref={ref} style={{ willChange: 'opacity, transform, clip-path, filter' }}>
+      {children}
+    </div>
+  )
 }

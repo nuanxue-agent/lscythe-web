@@ -179,7 +179,8 @@ function AboutRetro({ html }: { html: string }) {
 }
 
 export default function AboutPageClient({ html }: { html: string }) {
-  const { theme } = useTheme()
+  const { theme, mounted } = useTheme()
+  if (!mounted) return null
   if (theme === 'vaporwave') return <AboutVaporwave html={html} />
   if (theme === 'retro') return <AboutRetro html={html} />
   return <AboutTerminal html={html} />

@@ -22,7 +22,8 @@ export default function BlogArticleSwitcher({
   tags,
   html,
 }: BlogArticleSwitcherProps) {
-  const { theme } = useTheme()
+  const { theme, mounted } = useTheme()
+  if (!mounted) return null
 
   const kicker = (
     <>

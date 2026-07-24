@@ -11,7 +11,8 @@ interface HomePageClientProps {
 }
 
 export default function HomePageClient({ featured }: HomePageClientProps) {
-  const { theme } = useTheme()
+  const { theme, mounted } = useTheme()
+  if (!mounted) return null
 
   if (theme === 'vaporwave') return <HomeVaporwave featured={featured} />
   if (theme === 'retro') return <HomeRetro featured={featured} />

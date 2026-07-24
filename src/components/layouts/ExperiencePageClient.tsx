@@ -296,7 +296,8 @@ function ExperienceRetro() {
 }
 
 export default function ExperiencePageClient() {
-  const { theme } = useTheme()
+  const { theme, mounted } = useTheme()
+  if (!mounted) return null
   if (theme === 'vaporwave') return <ExperienceVaporwave />
   if (theme === 'retro') return <ExperienceRetro />
   return <ExperienceTerminal />

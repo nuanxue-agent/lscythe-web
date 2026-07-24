@@ -11,7 +11,8 @@ interface ProjectsPageClientProps {
 }
 
 export default function ProjectsPageClient({ projects }: ProjectsPageClientProps) {
-  const { theme } = useTheme()
+  const { theme, mounted } = useTheme()
+  if (!mounted) return null
 
   if (theme === 'vaporwave') return <ProjectsVaporwave projects={projects} />
   if (theme === 'retro') return <ProjectsRetro projects={projects} />

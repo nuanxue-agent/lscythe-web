@@ -7,23 +7,26 @@ type Theme = 'terminal' | 'vaporwave' | 'retro'
 interface ThemeContextValue {
   theme: Theme
   setTheme: (theme: Theme) => void
+  mounted: boolean
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
   theme: 'terminal',
   setTheme: () => {},
+  mounted: false,
 })
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>('terminal')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    // Read from localStorage on mount and apply immediately to avoid flash
     const stored = localStorage.getItem('lscythe-theme') as Theme | null
     const initial: Theme =
       stored === 'vaporwave' || stored === 'retro' ? stored : 'terminal'
     setThemeState(initial)
     document.documentElement.setAttribute('data-theme', initial)
+    setMounted(true)
   }, [])
 
   const setTheme = (next: Theme) => {
@@ -33,7 +36,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, mounted }}>
       {children}
     </ThemeContext.Provider>
   )
