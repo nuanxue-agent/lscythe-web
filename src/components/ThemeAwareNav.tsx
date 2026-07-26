@@ -185,58 +185,90 @@ function HanziNav() {
   const pathname = usePathname()
   return (
     <nav style={{
-      position: 'static',
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '1.25rem 3rem',
-      background: '#0f0c08',
-      borderBottom: '1px solid rgba(196,30,58,0.3)',
-      borderLeft: '3px solid #c41e3a',
+      alignItems: 'stretch',
+      background: '#0a0704',
+      borderBottom: '3px solid #8b0000',
     }}>
-      {/* Logo */}
-      <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'baseline', gap: '0.6rem' }}>
+      {/* Red left panel with logo */}
+      <Link href="/" style={{
+        textDecoration: 'none',
+        display: 'flex', alignItems: 'center', gap: '0.75rem',
+        padding: '1rem 2rem',
+        background: '#8b0000',
+        borderRight: '2px solid rgba(240,192,96,0.3)',
+        flexShrink: 0,
+      }}>
+        {/* Gold seal box */}
+        <div style={{
+          width: '32px', height: '32px',
+          border: '2px solid #f0c060',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'rgba(0,0,0,0.2)',
+        }}>
+          <span style={{
+            fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+            fontSize: '1.1rem', color: '#f0c060', fontWeight: 900, lineHeight: 1,
+          }}>刃</span>
+        </div>
         <span style={{
           fontFamily: 'Georgia, "Times New Roman", serif',
-          fontSize: '1.1rem',
-          fontWeight: 400,
-          letterSpacing: '0.15em',
-          color: '#e8e0d0',
-        }}>lscythe</span>
-        <span style={{
-          fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-          fontSize: '1.3rem',
-          color: '#c41e3a',
-          opacity: 0.85,
-          lineHeight: 1,
-        }}>刃</span>
+          fontSize: '1rem', fontWeight: 700,
+          letterSpacing: '0.2em', textTransform: 'uppercase',
+          color: '#f0e8d8',
+          textShadow: '1px 1px 0 rgba(0,0,0,0.4)',
+        }}>LSCYTHE</span>
       </Link>
 
-      {/* Links */}
-      <ul style={{ display: 'flex', gap: '2.5rem', listStyle: 'none', margin: 0, padding: 0 }}>
-        {NAV_LINKS.filter(l => l.href !== '/').map(({ href, label }) => {
-          const active = pathname === href
-          return (
-            <li key={href}>
-              <Link href={href} style={{
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                fontSize: '0.8rem',
-                letterSpacing: '0.12em',
-                color: active ? '#c41e3a' : 'rgba(232,224,208,0.6)',
-                textDecoration: 'none',
-                transition: 'color 0.2s',
-                borderBottom: active ? '1px solid #c41e3a' : '1px solid transparent',
-                paddingBottom: '2px',
-              }}
-              onMouseEnter={e => { if (!active) (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(196,30,58,0.85)' }}
-              onMouseLeave={e => { if (!active) (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(232,224,208,0.6)' }}
-              >
-                {label}
-              </Link>
-            </li>
-          )
-        })}
-      </ul>
+      {/* Dark panel with links */}
+      <div style={{
+        flex: 1, display: 'flex', alignItems: 'center',
+        padding: '0 2rem',
+        gap: '0',
+        background: '#0d0905',
+      }}>
+        <ul style={{ display: 'flex', gap: '0', listStyle: 'none', margin: 0, padding: 0 }}>
+          {NAV_LINKS.filter(l => l.href !== '/').map(({ href, label }) => {
+            const active = pathname === href
+            return (
+              <li key={href}>
+                <Link href={href} style={{
+                  display: 'block',
+                  fontFamily: '"JetBrains Mono", monospace',
+                  fontSize: '0.62rem',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  padding: '0.5rem 1rem',
+                  color: active ? '#f0e8d8' : 'rgba(232,224,208,0.45)',
+                  background: active ? '#c41e3a' : 'transparent',
+                  textDecoration: 'none',
+                  transition: 'background 0.15s, color 0.15s',
+                  borderRight: '1px solid rgba(196,30,58,0.15)',
+                }}
+                onMouseEnter={e => { if (!active) { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(139,0,0,0.3)'; (e.currentTarget as HTMLAnchorElement).style.color = '#e8e0d0' } }}
+                onMouseLeave={e => { if (!active) { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(232,224,208,0.45)' } }}
+                >
+                  {label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+
+      {/* Right: decorative hanzi */}
+      <div style={{
+        padding: '0 1.5rem',
+        display: 'flex', alignItems: 'center',
+        background: '#0d0905',
+        borderLeft: '1px solid rgba(196,30,58,0.2)',
+      }}>
+        <span style={{
+          fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+          fontSize: '1rem', color: 'rgba(196,30,58,0.3)',
+          letterSpacing: '0.5rem',
+        }}>道德力</span>
+      </div>
     </nav>
   )
 }

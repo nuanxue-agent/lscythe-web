@@ -29,218 +29,298 @@ function categoryHanzi(tags: string[]): string {
 export default function HomeHanzi({ featured }: HomeHanziProps) {
   return (
     <div style={{
-      background: '#0f0c08',
+      background: '#0d0905',
       minHeight: '100vh',
       color: '#e8e0d0',
       fontFamily: 'Georgia, "Times New Roman", serif',
+      overflowX: 'hidden',
     }}>
-      {/* Hero - Chinese scroll aesthetic */}
+
+      {/* ── Hero ── */}
       <section style={{
         position: 'relative',
-        padding: '8rem 4rem 10rem',
+        minHeight: '100vh',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         overflow: 'hidden',
-        minHeight: '90vh',
       }}>
-        {/* Center: narrow content block like a scroll */}
-        <div style={{ maxWidth: '420px', zIndex: 2, position: 'relative', textAlign: 'center' }}>
-          {/* Decorative top rule */}
+
+        {/* Left: deep red panel */}
+        <div style={{
+          width: '42%',
+          background: '#8b0000',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '4rem 3rem',
+          flexShrink: 0,
+        }}>
+          {/* Giant ghost 龍 in the panel */}
           <div style={{
-            width: '3rem',
-            height: '2px',
-            background: '#c41e3a',
-            margin: '0 auto 3rem',
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: 'clamp(12rem, 22vw, 18rem)',
+            fontWeight: 900,
+            color: 'rgba(0,0,0,0.25)',
+            userSelect: 'none',
+            pointerEvents: 'none',
+            lineHeight: 1,
+          }}>龍</div>
+
+          {/* Red noise texture */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px)',
+            pointerEvents: 'none',
           }} />
 
+          {/* Seal stamp */}
           <div style={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '0.65rem',
-            letterSpacing: '0.3em',
-            color: 'rgba(232,224,208,0.35)',
-            textTransform: 'uppercase',
+            position: 'relative', zIndex: 2,
+            width: '90px', height: '90px',
+            border: '4px solid #f0c060',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: '2rem',
-          }}>
-            android engineer · jakarta · est. 2019
-          </div>
-
-          <h1 style={{
-            fontFamily: 'Georgia, "Times New Roman", serif',
-            fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-            fontWeight: 400,
-            letterSpacing: '0.25em',
-            color: '#e8e0d0',
-            lineHeight: 1.1,
-            marginBottom: '1rem',
-          }}>
-            lscythe
-          </h1>
-
-          {/* Vermillion seal */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            marginBottom: '3rem',
+            background: 'rgba(0,0,0,0.2)',
           }}>
             <span style={{
               fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-              fontSize: '0.85rem',
-              color: '#c41e3a',
-              letterSpacing: '0.15em',
-              border: '2px solid rgba(196,30,58,0.6)',
-              padding: '0.25rem 0.75rem',
-              lineHeight: 1.6,
-            }}>刃 · 工匠</span>
+              fontSize: '2rem',
+              color: '#f0c060',
+              fontWeight: 900,
+              textShadow: '0 0 8px rgba(240,192,96,0.4)',
+            }}>刃</span>
           </div>
 
-          <p style={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '0.75rem',
-            color: 'rgba(232,224,208,0.5)',
-            letterSpacing: '0.08em',
-            lineHeight: 2,
-            marginBottom: '4rem',
+          <h1 style={{
+            position: 'relative', zIndex: 2,
+            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+            fontWeight: 700,
+            letterSpacing: '0.15em',
+            color: '#f0e8d8',
+            lineHeight: 1.1,
+            marginBottom: '0.75rem',
+            textShadow: '2px 2px 0 rgba(0,0,0,0.4)',
           }}>
-            building Android systems, KMP libraries,<br />
-            and developer tooling at Nocturn.<br />
-            obsessed with architecture that scales.
-          </p>
+            LSCYTHE
+          </h1>
 
-          {/* Stats row - mixed numerals + hanzi */}
-          <div style={{ display: 'flex', gap: '3.5rem', justifyContent: 'center', marginBottom: '3rem' }}>
+          <div style={{
+            position: 'relative', zIndex: 2,
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: '0.68rem',
+            letterSpacing: '0.2em',
+            color: 'rgba(240,232,216,0.6)',
+            textTransform: 'uppercase',
+            marginBottom: '2rem',
+          }}>
+            android engineer · jakarta
+          </div>
+
+          {/* Stats */}
+          <div style={{
+            position: 'relative', zIndex: 2,
+            display: 'flex', gap: '1.5rem',
+          }}>
             {[
-              { val: '6', suffix: '年', label: 'experience' },
-              { val: '10+', suffix: '项', label: 'projects' },
-              { val: '10+', suffix: '篇', label: 'posts' },
-            ].map(({ val, suffix, label }) => (
-              <div key={label} style={{ textAlign: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: '0.2rem' }}>
-                  <span style={{
-                    fontFamily: '"JetBrains Mono", monospace',
-                    fontSize: '1.8rem',
-                    fontWeight: 700,
-                    color: '#c41e3a',
-                    lineHeight: 1,
-                  }}>{val}</span>
-                  <span style={{
-                    fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-                    fontSize: '1rem',
-                    color: 'rgba(196,30,58,0.5)',
-                  }}>{suffix}</span>
+              { num: '6', hz: '年', label: 'yrs' },
+              { num: '10+', hz: '项', label: 'proj' },
+              { num: '10+', hz: '篇', label: 'posts' },
+            ].map(({ num, hz, label }) => (
+              <div key={label} style={{
+                borderLeft: '2px solid rgba(240,192,96,0.5)',
+                paddingLeft: '0.75rem',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.15rem' }}>
+                  <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '1.4rem', fontWeight: 700, color: '#f0c060' }}>{num}</span>
+                  <span style={{ fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif', fontSize: '0.9rem', color: 'rgba(240,192,96,0.6)' }}>{hz}</span>
                 </div>
-                <div style={{
-                  fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: '0.55rem',
-                  color: 'rgba(232,224,208,0.35)',
-                  letterSpacing: '0.1em',
-                  marginTop: '0.4rem',
-                }}>{label}</div>
+                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '0.52rem', letterSpacing: '0.1em', color: 'rgba(240,232,216,0.4)', textTransform: 'uppercase' }}>{label}</div>
               </div>
             ))}
           </div>
+        </div>
 
-          {/* Decorative bottom rule */}
+        {/* Right: dark ink panel */}
+        <div style={{
+          flex: 1,
+          background: '#0d0905',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: '4rem 3.5rem',
+          overflow: 'hidden',
+        }}>
+          {/* Layered ghost hanzi -- Chinese art fills space */}
           <div style={{
-            width: '3rem',
-            height: '2px',
-            background: '#c41e3a',
-            margin: '0 auto',
-          }} />
-        </div>
+            position: 'absolute', right: '-3rem', top: '-2rem',
+            fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+            fontSize: 'clamp(16rem, 32vw, 26rem)',
+            fontWeight: 900,
+            color: 'rgba(139,0,0,0.18)',
+            lineHeight: 1,
+            userSelect: 'none', pointerEvents: 'none',
+          }}>道</div>
 
-        {/* Right side: vertical text */}
-        <div style={{
-          position: 'absolute',
-          right: '3rem',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-          fontSize: 'clamp(3rem, 8vw, 5rem)',
-          fontWeight: 700,
-          color: 'rgba(196,30,58,0.25)',
-          writingMode: 'vertical-rl',
-          letterSpacing: '0.8em',
-          lineHeight: 1,
-          userSelect: 'none',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}>
-          刃 · 工 · 道
-        </div>
+          <div style={{
+            position: 'absolute', left: '1rem', bottom: '-1rem',
+            fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+            fontSize: 'clamp(8rem, 15vw, 12rem)',
+            fontWeight: 900,
+            color: 'rgba(200,168,75,0.08)',
+            lineHeight: 1,
+            userSelect: 'none', pointerEvents: 'none',
+          }}>德</div>
 
-        {/* Left side: ghost 道 character - more prominent */}
-        <div style={{
-          position: 'absolute',
-          left: '-2rem',
-          top: '50%',
-          transform: 'translateY(-50%)',
-          fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-          fontSize: 'clamp(14rem, 28vw, 22rem)',
-          fontWeight: 900,
-          color: 'rgba(196,30,58,0.12)',
-          lineHeight: 1,
-          userSelect: 'none',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}>
-          道
+          {/* Content */}
+          <div style={{ position: 'relative', zIndex: 2 }}>
+            {/* Red horizontal rule */}
+            <div style={{ width: '4rem', height: '3px', background: '#c41e3a', marginBottom: '2rem' }} />
+
+            <p style={{
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: '0.72rem',
+              color: 'rgba(232,224,208,0.55)',
+              letterSpacing: '0.06em',
+              lineHeight: 2,
+              marginBottom: '2.5rem',
+              maxWidth: '400px',
+            }}>
+              building Android systems, KMP libraries,<br />
+              and developer tooling at Nocturn.<br />
+              obsessed with architecture that scales.
+            </p>
+
+            {/* Seal-style quote */}
+            <div style={{
+              borderLeft: '4px solid #c41e3a',
+              paddingLeft: '1.25rem',
+              marginBottom: '3rem',
+              maxWidth: '380px',
+            }}>
+              <p style={{
+                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontSize: '1.05rem',
+                fontStyle: 'italic',
+                color: 'rgba(232,224,208,0.75)',
+                lineHeight: 1.65,
+              }}>
+                &ldquo;complexity is not a feature.<br />it&apos;s a failure of design.&rdquo;
+              </p>
+              <div style={{
+                fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+                fontSize: '0.75rem',
+                color: 'rgba(196,30,58,0.5)',
+                marginTop: '0.5rem',
+                letterSpacing: '0.15em',
+              }}>— 复杂非功能，乃设计之败</div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <Link href="/projects" style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: '0.68rem', letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                padding: '0.65rem 1.5rem',
+                background: '#c41e3a',
+                color: '#f0e8d8',
+                textDecoration: 'none',
+                boxShadow: '2px 2px 0 rgba(0,0,0,0.4)',
+              }}>
+                作品集 / Projects →
+              </Link>
+              <Link href="/about" style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: '0.68rem', letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                padding: '0.65rem 1.5rem',
+                border: '1px solid rgba(196,30,58,0.5)',
+                color: 'rgba(196,30,58,0.8)',
+                textDecoration: 'none',
+              }}>
+                关于 / About
+              </Link>
+            </div>
+          </div>
+
+          {/* Vertical hanzi column right edge */}
+          <div style={{
+            position: 'absolute', right: '1.5rem', top: '50%',
+            transform: 'translateY(-50%)',
+            fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+            fontSize: '1.1rem',
+            fontWeight: 700,
+            color: 'rgba(196,30,58,0.35)',
+            writingMode: 'vertical-rl',
+            letterSpacing: '1rem',
+            lineHeight: 1,
+            userSelect: 'none', pointerEvents: 'none',
+          }}>工匠精神</div>
         </div>
       </section>
 
-      {/* Full-width horizontal red rule */}
-      <div style={{
-        width: '100%',
-        height: '2px',
-        background: 'rgba(196,30,58,0.3)',
-      }} />
+      {/* ── Red divider ── */}
+      <div style={{ height: '4px', background: 'linear-gradient(90deg, #8b0000, #c41e3a, #8b0000)' }} />
 
-      {/* Selected work */}
-      <section style={{ padding: '5rem 4rem 6rem' }}>
-        <div style={{ marginBottom: '3rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          <div style={{
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '0.62rem',
-            color: 'rgba(232,224,208,0.35)',
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-          }}>selected work</div>
-          <div style={{ flex: 1, height: '1px', background: 'rgba(196,30,58,0.12)' }} />
-          <div style={{
-            fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-            fontSize: '0.95rem',
-            color: 'rgba(196,30,58,0.35)',
-          }}>作品</div>
+      {/* ── Selected work ── */}
+      <section style={{ padding: '5rem 0' }}>
+        {/* Section header with red band */}
+        <div style={{
+          display: 'flex', alignItems: 'stretch',
+          marginBottom: '3rem',
+        }}>
+          <div style={{ width: '42%', background: '#8b0000', padding: '1.25rem 3rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <span style={{
+              fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
+              fontSize: '1.5rem', color: '#f0c060', fontWeight: 900,
+            }}>作品</span>
+            <span style={{
+              fontFamily: '"JetBrains Mono", monospace',
+              fontSize: '0.6rem', letterSpacing: '0.2em',
+              color: 'rgba(240,232,216,0.6)', textTransform: 'uppercase',
+            }}>selected work</span>
+          </div>
+          <div style={{ flex: 1, background: '#1a0f0a', padding: '1.25rem 3.5rem', display: 'flex', alignItems: 'center' }}>
+            <div style={{ height: '1px', flex: 1, background: 'rgba(196,30,58,0.3)' }} />
+          </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+        <div style={{ padding: '0 3.5rem 0 3rem' }}>
           {featured.map((project, i) => (
             <Link
               key={project.slug}
               href={`/projects/${project.slug}`}
               style={{
                 display: 'grid',
-                gridTemplateColumns: '2rem 1fr auto',
+                gridTemplateColumns: '3rem 3rem 1fr auto',
                 alignItems: 'start',
                 gap: '1.5rem',
-                padding: '1.5rem 0',
-                borderBottom: '1px solid rgba(196,30,58,0.1)',
-                borderLeft: '2px solid rgba(196,30,58,0.3)',
-                paddingLeft: '1.25rem',
+                padding: '1.75rem 0',
+                borderBottom: '1px solid rgba(196,30,58,0.15)',
                 textDecoration: 'none',
-                transition: 'border-left-color 0.2s',
+                transition: 'background 0.2s',
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderLeftColor = '#c41e3a' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderLeftColor = 'rgba(196,30,58,0.3)' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(139,0,0,0.12)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent' }}
             >
-              {/* Hanzi category marker */}
+              {/* Index */}
+              <span style={{
+                fontFamily: '"JetBrains Mono", monospace',
+                fontSize: '0.6rem', color: 'rgba(196,30,58,0.4)',
+                letterSpacing: '0.1em', marginTop: '0.2rem',
+              }}>0{i + 1}</span>
+
+              {/* Hanzi category */}
               <span style={{
                 fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-                fontSize: '1rem',
-                color: 'rgba(196,30,58,0.5)',
-                lineHeight: 1,
-                marginTop: '0.1rem',
+                fontSize: '1.4rem', color: '#c41e3a',
+                lineHeight: 1, marginTop: '-0.1rem',
+                textShadow: '1px 1px 0 rgba(0,0,0,0.3)',
               }}>
                 {categoryHanzi(project.tags)}
               </span>
@@ -248,139 +328,87 @@ export default function HomeHanzi({ featured }: HomeHanziProps) {
               <div>
                 <div style={{
                   fontFamily: 'Georgia, "Times New Roman", serif',
-                  fontSize: '1rem',
-                  fontWeight: 400,
-                  color: '#e8e0d0',
-                  letterSpacing: '0.05em',
+                  fontSize: '1.05rem', fontWeight: 600,
+                  color: '#e8e0d0', letterSpacing: '0.05em',
                   marginBottom: '0.4rem',
                 }}>{project.title}</div>
                 <div style={{
                   fontFamily: '"JetBrains Mono", monospace',
-                  fontSize: '0.65rem',
-                  color: 'rgba(232,224,208,0.4)',
-                  letterSpacing: '0.05em',
+                  fontSize: '0.65rem', color: 'rgba(232,224,208,0.4)',
                   lineHeight: 1.6,
                 }}>{project.description}</div>
+                <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+                  {project.tags.slice(0, 3).map(t => (
+                    <span key={t} style={{
+                      fontFamily: '"JetBrains Mono", monospace',
+                      fontSize: '0.55rem', letterSpacing: '0.08em',
+                      padding: '0.15rem 0.4rem',
+                      border: '1px solid rgba(196,30,58,0.25)',
+                      color: 'rgba(196,30,58,0.55)',
+                    }}>{t}</span>
+                  ))}
+                </div>
               </div>
 
               <div style={{
                 fontFamily: '"JetBrains Mono", monospace',
-                fontSize: '0.58rem',
-                color: 'rgba(196,30,58,0.4)',
-                letterSpacing: '0.1em',
-                marginTop: '0.15rem',
+                fontSize: '0.58rem', color: 'rgba(196,30,58,0.35)',
+                letterSpacing: '0.08em', marginTop: '0.2rem',
+                whiteSpace: 'nowrap',
               }}>{project.year}</div>
             </Link>
           ))}
 
-          <Link
-            href="/projects"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              marginTop: '1.75rem',
+          <div style={{ marginTop: '2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <Link href="/projects" style={{
               fontFamily: '"JetBrains Mono", monospace',
-              fontSize: '0.65rem',
-              color: 'rgba(196,30,58,0.6)',
-              letterSpacing: '0.15em',
-              textDecoration: 'none',
+              fontSize: '0.65rem', letterSpacing: '0.15em',
+              color: 'rgba(196,30,58,0.7)',
+              textDecoration: 'none', textTransform: 'uppercase',
+              borderBottom: '1px solid rgba(196,30,58,0.3)',
+              paddingBottom: '0.1rem',
               transition: 'color 0.2s',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#c41e3a' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(196,30,58,0.6)' }}
-          >
-            <span>all projects</span>
-            <span style={{ fontSize: '0.8rem' }}>→</span>
-          </Link>
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = '#c41e3a' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'rgba(196,30,58,0.7)' }}
+            >
+              全部作品 / All Projects →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Full-width horizontal red rule */}
-      <div style={{
-        width: '100%',
-        height: '2px',
-        background: 'rgba(196,30,58,0.3)',
-      }} />
+      {/* ── Gold divider ── */}
+      <div style={{ height: '2px', background: 'linear-gradient(90deg, transparent, rgba(200,168,75,0.4), transparent)' }} />
 
-      {/* Principle quote */}
-      <section style={{
-        padding: '5rem 4rem',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '4rem',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute',
-          left: '-1rem',
-          fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-          fontSize: '12rem',
-          fontWeight: 900,
-          color: 'rgba(200,168,75,0.04)',
-          lineHeight: 1,
-          userSelect: 'none',
-          pointerEvents: 'none',
-        }}>德</div>
-
-        <blockquote style={{
-          fontFamily: 'Georgia, "Times New Roman", serif',
-          fontSize: 'clamp(1rem, 2vw, 1.35rem)',
-          fontWeight: 400,
-          fontStyle: 'italic',
-          color: 'rgba(232,224,208,0.7)',
-          lineHeight: 1.7,
-          maxWidth: '520px',
-          zIndex: 1,
-          borderLeft: '2px solid rgba(196,30,58,0.4)',
-          paddingLeft: '1.5rem',
-        }}>
-          "complexity is not a feature.<br />
-          it's a failure of design."
-          <footer style={{
-            marginTop: '0.75rem',
-            fontFamily: '"JetBrains Mono", monospace',
-            fontSize: '0.6rem',
-            letterSpacing: '0.15em',
-            color: 'rgba(232,224,208,0.3)',
-            fontStyle: 'normal',
-          }}>— lscythe / 2026</footer>
-        </blockquote>
-      </section>
-
-      {/* Footer with decorative hanzi row */}
+      {/* ── Footer ── */}
       <footer style={{
-        padding: '2rem 4rem',
-        borderTop: '1px solid rgba(196,30,58,0.15)',
+        padding: '2.5rem 3rem',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-        gap: '1.5rem',
+        justifyContent: 'space-between',
+        background: '#0a0704',
       }}>
         <div style={{
           fontFamily: '"Noto Serif SC", "Source Han Serif", Georgia, serif',
-          fontSize: '1.2rem',
-          color: 'rgba(196,30,58,0.25)',
-          letterSpacing: '1.5rem',
-          paddingLeft: '1.5rem',
-        }}>
-          道 德 力 武 技 工
-        </div>
+          fontSize: '1.1rem',
+          color: 'rgba(196,30,58,0.3)',
+          letterSpacing: '1.2rem',
+          paddingLeft: '1.2rem',
+        }}>道 德 力 武 技 工</div>
         <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          width: '100%',
           fontFamily: '"JetBrains Mono", monospace',
-          fontSize: '0.6rem',
-          letterSpacing: '0.12em',
-          color: 'rgba(232,224,208,0.25)',
-        }}>
-          <span>lscythe.dev</span>
-          <span>{new Date().getFullYear()}</span>
-        </div>
+          fontSize: '0.58rem', letterSpacing: '0.12em',
+          color: 'rgba(232,224,208,0.2)',
+        }}>lscythe.dev · {new Date().getFullYear()}</div>
       </footer>
+
+      <style>{`
+        @keyframes hanzi-breathe {
+          0%, 100% { opacity: 0.18; }
+          50% { opacity: 0.28; }
+        }
+      `}</style>
     </div>
   )
 }
