@@ -47,7 +47,7 @@ export default function NoiseOverlay() {
     }
   }, [theme])
 
-  if (theme === 'retro') return null
+  if (theme === 'retro' || theme === 'hanzi') return null
 
   return (
     <canvas

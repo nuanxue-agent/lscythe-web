@@ -1,11 +1,14 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { useTheme } from './ThemeProvider'
 
 export default function MouseSpotlight() {
   const ref = useRef<HTMLDivElement>(null)
+  const { theme } = useTheme()
 
   useEffect(() => {
+    if (theme === 'retro' || theme === 'hanzi') return
     const el = ref.current
     if (!el) return
 
@@ -22,8 +25,13 @@ export default function MouseSpotlight() {
       current.x += (mouse.x - current.x) * 0.08
       current.y += (mouse.y - current.y) * 0.08
 
-      el.style.background = `radial-gradient(600px circle at ${current.x}px ${current.y}px, rgba(0,255,136,0.08), transparent 40%)`
+      const color = theme === 'cyber'
+        ? 'rgba(255,0,60,0.06)'
+        : theme === 'vaporwave'
+        ? 'rgba(185,103,255,0.08)'
+        : 'rgba(0,255,136,0.08)'
 
+      el.style.background = `radial-gradient(600px circle at ${current.x}px ${current.y}px, ${color}, transparent 40%)`
       rafId = requestAnimationFrame(update)
     }
 
@@ -34,7 +42,9 @@ export default function MouseSpotlight() {
       window.removeEventListener('mousemove', onMove)
       cancelAnimationFrame(rafId)
     }
-  }, [])
+  }, [theme])
+
+  if (theme === 'retro' || theme === 'hanzi') return null
 
   return (
     <div
